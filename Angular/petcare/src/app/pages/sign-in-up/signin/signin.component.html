@@ -1,0 +1,22 @@
+
+<mat-card-title class="center">Login</mat-card-title>
+<form class="" [formGroup]="form" (ngSubmit)="onSumbit()">
+  <div>
+  <mat-form-field class="center" appearance="outline">
+    <mat-label>Username</mat-label>
+    <input type="username" matInput formControlName="username">
+  <div *ngIf="form?.get('username')?.invalid && form?.get('name')?.touched" class="text-danger">
+    Name is required.
+  </div>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password">
+  </mat-form-field>
+</div>
+<div class="center">
+  <button mat-stroked-button (click)="onSumbit()">LOGIN</button>
+</div>
+</form>

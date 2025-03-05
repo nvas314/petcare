@@ -1,0 +1,32 @@
+
+
+<mat-card class="card-container">
+  <div style="text-align: center;color:aliceblue;font-size: 250%;margin: 10px;">Notifications</div>
+  <div *ngFor="let r of reqs">
+<mat-card style="background-color: rgb(150, 255, 14);">
+  <mat-card-content>
+    <h2 style="margin: 10px;">{{r.toholder}} {{r.toanimalHolderId}}</h2> <div style="margin: 10px;">
+
+    </div> <div class="date">{{r.timestamp | date:'HH:mm,dd/MM/YYYY'}}</div>
+    <div class="button">
+      <button mat-stroked-button (click)="TakePetReq(r.postid!,r.toholder!,r.toanimalHolderId!.toString(),r.id!)">Accept</button>
+      <button mat-stroked-button (click)="DelPetReq(r.id!)" style="background-color: rgba(255, 0, 0, 0.349);color: rgb(0, 0, 0);margin-left: 5px;">Decline</button>
+    </div>
+    <a [routerLink]="'/comments/'+r.postid">Post</a>
+  </mat-card-content>
+</mat-card>
+</div>
+<div *ngFor="let n of notif">
+  <mat-card>
+    <mat-card-content>
+      <h2 style="margin: 10px;">{{n.title}}</h2> <div style="margin: 10px;">{{n.message}}</div> <div class="date">{{n.timestamp| date:'dd/MM/YYYY'}}</div>
+      <button mat-icon-button class="button" aria-label="Close">
+        <mat-icon (click)="DeleteNotif(n.id!)">close</mat-icon>
+      </button>
+    <div *ngIf="n.postId != null">
+      <a style="margin: 10px;" [routerLink]="['/posts/',n.postId]">Post</a>
+    </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</mat-card>

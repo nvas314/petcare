@@ -1,0 +1,9 @@
+<div class="container">
+  <h1 style="text-align: center;font-size:300%;">{{anmnt?.title}}</h1>
+  <p>{{anmnt?.message}}</p>
+<div *ngIf="anmnt?.postId != null">
+  [<a [routerLink]="'/comments/'+anmnt?.postId">Post</a>]
+</div>
+   {{anmnt?.date | date:'long'}}
+
+</div>

@@ -1,0 +1,39 @@
+<div class="container">
+  <h1 style="text-align: center;font-size:300%;">New Announcement</h1>
+
+
+<form [formGroup]="ann_form" (ngSubmit)="MakeAnnouncement()">
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Title</mat-label>
+      <input type="text" matInput formControlName="title">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Message</mat-label>
+      <textarea matInput formControlName="message"></textarea>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+    <mat-label>At Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Post</mat-label>
+      <input type="number" matInput formControlName="postId">
+  </mat-form-field>
+</div>
+<div class="center">
+  <button mat-stroked-button type="submit">Create Announcement</button>
+</div>
+</form>
+
+
+</div>

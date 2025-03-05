@@ -1,0 +1,8 @@
+#mapContainer {
+  height: 100%;
+  width: 100%;
+}
+
+::ng-deep .leaflet-pane.leaflet-shadow-pane {
+  display: none;
+}

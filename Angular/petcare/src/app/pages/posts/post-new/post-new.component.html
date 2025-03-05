@@ -1,0 +1,118 @@
+  <div class="container">
+    <h1 style="text-align: center;padding-top: 10px ;">New Post</h1>
+  <form [formGroup]="post_form" (ngSubmit)="SumbitPost()">
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-radio-group aria-label="Select an option" appearance="outline" formControlName="type">
+        <mat-radio-button value="LOST">Lost</mat-radio-button>
+        <mat-radio-button value="FOUND">Found</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Animal name</mat-label>
+        <input matInput type="text" matInput formControlName="animalName">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Animal</mat-label>
+        <input matInput type="text" matInput formControlName="animal">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Breed</mat-label>
+        <input matInput type="text" matInput formControlName="breed">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Longitude</mat-label>
+        <input matInput type="number" matInput formControlName="longitude">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Latitude</mat-label>
+        <input matInput type="number" matInput formControlName="latitude">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Collar Text</mat-label>
+        <input matInput type="text" matInput formControlName="collarText">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Health Condition</mat-label>
+        <input matInput type="text" matInput formControlName="healthCondition">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-radio-group aria-label="Holder Type" formControlName="holder">
+        <mat-radio-button value="COMMON">Self</mat-radio-button>
+        <mat-radio-button value="VET">Professional</mat-radio-button>
+        <mat-radio-button value="INSTITUTION">Institution</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div *ngIf="post_form.get('holder')?.value === 'INSTITUTION'">
+      <mat-form-field class="center" appearance="outline">
+        <mat-label>Institution Name</mat-label>
+        <input matInput type="text" formControlName="instName">
+      </mat-form-field>
+    </div>
+
+  <div>
+    <section class="center" appearance="outline">
+      <mat-checkbox class="example-margin" value="EMERGENCY" formControlName="status">Emergency</mat-checkbox>
+    </section>
+  </div>
+
+    <div>
+    <mat-form-field class="center" appearance="outline">
+      <mat-label>At Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="timestamp">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+<div *ngFor="let item of [].constructor(a); let i = index">
+<label for="image">Upload</label><br>
+<input type="file" (change)="onImageUpload($event,i)" id="image" name="image">
+</div>
+<button (click)="addImage()">Add</button><button (click)="remImage(1)">Remove</button><br>
+
+<app-map-input (postiionChanged)="changeCrendentials($event)" [lon]="lonInput" [lat]="latInput"></app-map-input>
+
+<div class="center">
+  <button mat-stroked-button>Add Post</button>
+</div>
+
+</form>
+</div>

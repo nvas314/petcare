@@ -1,0 +1,8 @@
+#map {
+  height: 500px;
+  width: 500px;
+}
+
+::ng-deep .leaflet-pane.leaflet-shadow-pane {
+  display: none;
+}

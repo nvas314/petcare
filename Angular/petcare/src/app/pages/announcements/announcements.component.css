@@ -1,0 +1,30 @@
+.container{
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+
+  height: 100%;
+  background: white;
+}
+
+a[mat-list-item]:nth-child(n){
+  height: auto;
+}
+
+.message{
+
+}
+
+.date{
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  font-size: 18px;
+}
+
+.post{
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 18px;
+}

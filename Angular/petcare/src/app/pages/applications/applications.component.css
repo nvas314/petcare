@@ -1,0 +1,11 @@
+.container{
+display:flex;
+width:100%;
+justify-content: center;
+display: flex;
+}
+
+.table-grid{
+  margin: 40px;
+  width: 40%;
+}

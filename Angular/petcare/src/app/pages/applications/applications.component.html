@@ -1,0 +1,125 @@
+<div class="container">
+  <div class="table-grid">
+    <h3 style="text-align: center;">Professionals</h3>
+
+  <table mat-table [dataSource]="instApps" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="institution">
+    <th mat-header-cell *matHeaderCellDef> Institution </th>
+    <td mat-cell *matCellDef="let element"> {{element.instId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> Type </th>
+    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="datetime">
+    <th mat-header-cell *matHeaderCellDef> Datetime </th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="element.datetime != null">
+        {{element.datetime | date:'H:mm:ss | d/M/y'}}
+      </div>
+      <div *ngIf="element.datetime == null && selectedInstId == -1">
+        <button mat-stroked-button (click)="SelectForDateInst(element.id)">Select Date</button>
+      </div>
+      <div *ngIf="element.datetime == null && selectedInstId != -1"><mat-form-field class="center">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="InstselectedDay" (ngModelChange)="onDateChange()">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="center">
+        <mat-label>Time</mat-label>
+        <input matInput
+          [matTimepicker]="timepicker1" [(ngModel)]="InstselectedTime" (ngModelChange)="onDateChange()">
+        <mat-timepicker #timepicker1/>
+        <mat-timepicker-toggle [for]="timepicker1" matSuffix/>
+      </mat-form-field>
+        <button mat-stroked-button (click)="SumbitDateInst(element.id)">Apply Date</button>
+      </div>
+    </td>
+
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action </th>
+    <td mat-cell *matCellDef="let element"> <button mat-stroked-button (click)="InstApply('COMMON',element.id)">Apply</button> <button mat-stroked-button (click)="InstDelete(element.id)">Delete</button> </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name', 'institution', 'description', 'type','datetime','action']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name', 'institution', 'description', 'type','datetime','action'];"></tr>
+</table>
+  </div>
+  <div class="table-grid">
+<h3 style="text-align: center;">Institution Employees</h3>
+
+    <table mat-table [dataSource]="profApps" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="profession">
+      <th mat-header-cell *matHeaderCellDef> Profession </th>
+      <td mat-cell *matCellDef="let element"> {{element.profession}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> location </th>
+      <td mat-cell *matCellDef="let element"> Lon:{{element.longitude}} Lat:{{element.latitude}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="datetime">
+      <th mat-header-cell *matHeaderCellDef> Datetime </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="element.datetime != null">
+          {{element.datetime | date:'H:mm:ss | d/M/y'}}
+        </div>
+        <div *ngIf="element.datetime == null && selectedProfId == -1">
+          <button mat-stroked-button (click)="SelectForDateProf(element.id)">Select Date</button>
+        </div>
+        <div *ngIf="element.datetime == null && selectedProfId != -1"><mat-form-field class="center">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="ProfselectedDay" (ngModelChange)="onDateChange()">
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="center">
+          <mat-label>Time</mat-label>
+          <input matInput
+            [matTimepicker]="timepicker2" [(ngModel)]="ProfselectedTime" (ngModelChange)="onDateChange()">
+          <mat-timepicker #timepicker2/>
+          <mat-timepicker-toggle [for]="timepicker2" matSuffix/>
+        </mat-form-field>
+          <button mat-stroked-button (click)="SumbitDateProf(element.id)">Apply Date</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element">  <button mat-stroked-button (click)="ProfApply(element.id)">Apply</button> <button mat-stroked-button (click)="ProfDelete(element.id)">Delete</button> </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['name', 'profession', 'description', 'location','datetime','action']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['name', 'profession', 'description', 'location','datetime','action'];"></tr>
+  </table>
+    </div>
+</div>

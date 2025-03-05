@@ -1,0 +1,44 @@
+
+<mat-accordion>
+  <mat-expansion-panel style="background-color: bisque;" hideToggle>
+    <mat-expansion-panel-header>
+        <div [matBadge]="post.status" matBadgeOverlap="true" class="condition-badge"></div>
+      <mat-panel-description>
+
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" role="listbox">
+              <img src="{{ getSlide() }}" alt="slide" >
+              <div class="slide-buttons" *ngIf="postImages.length > 1">
+                <a class="prev" (click)='getPrev(); $event.stopPropagation()'>❮</a>
+                <a class="next"  (click)='getNext(); $event.stopPropagation()'>❯</a>
+              </div>
+          </div>
+        </div>
+
+         <div>
+          <h3 class="post-title">{{ post.title }}</h3>
+          <p><strong>Name:</strong> {{ post.animalName }}</p>
+          <p><strong>Animal:</strong> {{ post.animal }}</p>
+          <p><strong>Breed:</strong> {{ post.breed }}</p>
+          <p><strong>CollarText:</strong> {{ post.collarText }}</p>
+          <p><strong>Health Condition:</strong> {{ post.healthCondition }}</p>
+          <div *ngIf="post.holder == 'COMMON'">
+            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
+          </div>
+          <div *ngIf="post.holder == 'VET'">
+            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
+          </div>
+          <div *ngIf="post.holder == 'INSTITUTION'">
+            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
+          </div>
+        </div>
+      </mat-panel-description>
+      <div class="angle-up">{{post.timestamp| date:'d/M/y'}}</div>
+    </mat-expansion-panel-header>
+    <app-post-box-secondary [post]="post"></app-post-box-secondary>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+
+

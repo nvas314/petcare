@@ -1,0 +1,23 @@
+.secondary-container {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.angle{
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}

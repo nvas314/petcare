@@ -1,0 +1,31 @@
+.card-items{
+  display: inline-block;
+  align-items: center;
+  margin: 10px auto 0;
+  perspective: 700px;
+  margin: 10px;
+}
+
+.inst-button{
+  width:90%;
+  height:70px;
+  background-color: aliceblue;
+  gap: 10px;
+}
+
+.inst-card{
+  width: 35%;
+  height:80%;
+  background-color: rgb(43, 128, 255);
+}
+
+.details-card{
+  width: 55%;
+  height:60%;
+}
+
+.card-title{
+  margin: 30px auto;
+  text-align: center;
+  padding: auto;
+}

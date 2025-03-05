@@ -1,0 +1,45 @@
+<div class="container-s">
+  <div>
+
+  <a routerLink="/admin/institutions/new"><button mat-stroked-button>New Institution</button></a>
+  </div>
+<mat-card class="card-items inst-card">
+    <mat-card-header>
+      <div class="card-title">
+        <mat-card-title style="font-size: 200%;">Title</mat-card-title>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+    </mat-card-content>
+
+      <div *ngFor="let inst of intitutions">
+        <button mat-button class="inst-button" (click)="selectInstitution(inst.id!)">{{inst.name}}</button>
+      </div>
+    <mat-card-footer>
+    </mat-card-footer>
+</mat-card>
+
+<mat-card class="card-items details-card">
+  <mat-card-header>
+      <mat-card-title>Details</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+  </mat-card-content>
+
+
+
+  <div *ngIf="institution_selected != -1">
+  <p><strong>Name:</strong> {{intitutions[institution_selected].name}}</p>
+  <p><strong>Location:</strong> Lon:{{intitutions[institution_selected].longitude}} Lat:{{intitutions[institution_selected].latitude}}</p>
+  <p><strong>Description:</strong> {{intitutions[institution_selected].description}}</p>
+  <p><strong>Staff:</strong></p>
+  <div *ngFor="let user of intitutions[institution_selected].crew">
+    <a [routerLink]="'/user/'+user.id">{{user.name}} {{user.middleName}} {{user.surname}}</a>,
+  </div>
+  <app-map-output [lon]="intitutions[institution_selected].longitude" [lat]="intitutions[institution_selected].latitude"></app-map-output>
+  <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'institution', id: intitutions[institution_selected].id }" ><button mat-button class="inst-button">Give Pet</button></a>
+  </div>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+</div>

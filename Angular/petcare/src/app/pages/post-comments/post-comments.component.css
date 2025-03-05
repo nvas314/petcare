@@ -1,0 +1,43 @@
+.container-comments{
+  background-color: rgb(221, 197, 119);
+  width: 70%;
+  margin: auto;
+  padding: 30px;
+  border-radius:20px;
+}
+
+.comment{
+  height:30px;
+  margin: 30px;
+  font-size: 120%;
+}
+
+.comment a{
+  font-size: larger;
+}
+
+.form{
+  background-color: rgb(162, 209, 67);
+  display:flexbox;
+  margin: 20px;
+  padding: 10px;
+  border-radius:20px;
+  align-items: center;
+}
+
+mat-form-field{
+  width: 100%;
+}
+
+.form-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.input-container{
+
+  flex-grow: 1;
+  min-width: 300px;
+}

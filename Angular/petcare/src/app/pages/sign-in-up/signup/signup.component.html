@@ -1,0 +1,59 @@
+<mat-card-title class="center">Sign Up</mat-card-title>
+<form class="" [formGroup]="form" (ngSubmit)="onSumbit()">
+  <div>
+  <mat-form-field class="center" appearance="outline">
+    <mat-label>Username</mat-label>
+    <input type="text" matInput formControlName="username">
+  <div *ngIf="form?.get('username')?.invalid && form?.get('name')?.touched" class="text-danger">
+    Username is required.
+  </div>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Confirm Password</mat-label>
+      <input type="password" matInput formControlName="confirmpassword">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input type="text" matInput formControlName="name">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Middle Name</mat-label>
+      <input type="text" matInput formControlName="middleName">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input type="text" matInput formControlName="surname">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field class="center" appearance="outline">
+      <mat-label>Telephone</mat-label>
+      <input type="tel" matInput formControlName="telephone">
+  </mat-form-field>
+</div>
+<label for="image">Upload</label><br>
+<input type="file" (change)="onImageUpload($event)" id="image" name="image">
+<div class="center">
+  <button mat-stroked-button>Create Account</button>
+</div>
+</form>

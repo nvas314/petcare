@@ -1,0 +1,95 @@
+* {box-sizing: border-box;}
+
+body {
+  margin: 0;
+}
+
+.mat-toolbar {
+  overflow: hidden;
+  padding: 20px 10px;
+  height:100px;
+  background-color: #8dc770;
+}
+
+.mat-toolbar a {
+  float: left;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100px;
+  border-radius: 4px;
+}
+
+.mat-toolbar a.logo {
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.mat-toolbar a.logo:hover {
+  background-color: #8dc770;
+}
+
+.mat-toolbar a:hover {
+  background-color: #ffffffc4;
+  color: black;
+}
+
+.mat-toolbar a.active {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+}
+
+.header-right {
+  position: absolute;
+  right: 15px;
+  height: 100px;
+}
+
+.img-name{
+  display:flex;
+  /* width: 200px; */
+  flex-direction: row;
+  /* position:relative; */
+  align-items: center;
+  margin-top: 15px;
+}
+
+.account-image{
+  width:70px;
+  height: 70px;
+  border-radius: 4px;
+  /* position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%); */
+}
+.account-name{
+  margin-right: 15px;
+  /* position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%); */
+}
+
+.icons-right{
+  margin-right: 10px;
+}
+
+mat-icon{
+  margin-bottom:5px
+}
+@media screen and (max-width: 500px) {
+  .mat-toolbar a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .header-right {
+    float: none;
+  }
+}

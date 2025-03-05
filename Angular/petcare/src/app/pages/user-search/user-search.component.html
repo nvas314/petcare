@@ -1,0 +1,21 @@
+<p>user-search works!</p>
+
+
+<mat-label>Title</mat-label>
+<input type="text" matInput #searchInput>
+<button mat-stroked-button (click)="SearchUserParam(searchInput.value)">Search</button>
+
+<div *ngFor="let user of searchResults">
+
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <a [routerLink]="'/user/'+user.id"> {{user.name}} {{user.middleName}} {{user.surname}}</a>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+<div *ngIf="searchResults.length == 0 && searchRequest != null">
+<div>
+  No Results
+</div>
+</div>

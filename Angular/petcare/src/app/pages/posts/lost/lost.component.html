@@ -1,0 +1,23 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+  </mat-toolbar>
+
+  <mat-sidenav #sidenav mode="side" opened>
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/item1">Item 1</a>
+      <a mat-list-item routerLink="/item2">Item 2</a>
+      <a mat-list-item routerLink="/item3">Item 3</a>
+      <a mat-list-item routerLink="/item4">Item 4</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <h1>Welcome to My Page</h1>
+    <p>Click on an item in the menu to navigate.</p>
+  </mat-sidenav-content>
+</mat-sidenav-container>

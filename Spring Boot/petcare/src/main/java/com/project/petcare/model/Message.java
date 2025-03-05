@@ -1,0 +1,33 @@
+package com.project.petcare.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+
+@Entity
+@Data
+@Accessors(chain = true)
+public class Message {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    //private Long send_id;
+    //private Long receive_id;
+    @CreationTimestamp
+    private Timestamp timestamp;
+    private String message;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "send_id")//to User id
+    private User sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receive_id")//to User id
+    private User receiver;
+
+}

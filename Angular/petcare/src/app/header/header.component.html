@@ -1,0 +1,38 @@
+
+<mat-toolbar>
+  <span><a routerLink="/" class="logo" (click)="changeActive('main')">PetCare</a></span>
+    <a routerLink="posts/lost" (click)="changeActive('lost')" [class.active] = "href == 'lost'">Lost Animals</a>
+    <a routerLink="posts/found" (click)="changeActive('found')" [class.active] = "href == 'found'">Found Animals</a>
+  <a routerLink="announcements" (click)="changeActive('announcements')" [class.active] = "href == 'announcements'"  >Anouncments</a>
+    <a routerLink="new/application" (click)="changeActive('application')" [class.active] = "href == 'application'">New Application</a>
+    <a routerLink="/professionals" (click)="changeActive('professionals')" [class.active] = "href == 'professionals'">Proffesionals</a>
+    <a class="active" routerLink="/institutions" (click)="changeActive('institutions')" [class.active] = "href == 'institutions'">Institutions</a>
+    <a routerLink="/apps" (click)="changeActive('apps')" [class.active] = "href == 'apps'">User Applications</a>
+    <a class="login" routerLink="/login">Log in</a>
+    <a href="/user/search">Search User</a>
+    <a href="admin/users">Users</a>
+
+    <div class="header-right">
+      <a routerLink="notifications" (click)="changeActive('notifications')" [class.active] = "href == 'notifications'">
+        <div [matBadge]="notifications" matBadgeOverlap="true" class="condition-badge"><mat-icon>notifications</mat-icon></div>
+      </a>
+      <a routerLink="messages" class="icons-right" (click)="changeActive('messages')" [class.active] = "href == 'messages'">
+        <div [matBadge]="newmessages" matBadgeOverlap="true" class="condition-badge"><mat-icon>chat Bubble</mat-icon></div>
+      </a>
+      <div *ngIf="username!=''" class="img-name">
+        <div class="account-name">{{fullname}}</div>
+        <img mat-button [matMenuTriggerFor]="menu" class="account-image" [src]="image">
+      </div>
+      <div *ngIf="username == null">
+        <a class="login" routerLink="/login" (click)="changeActive('login')" [class.active] = "href == 'login'">Log in</a>
+      </div>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/myposts">My Posts</button>
+      <button mat-menu-item routerLink="/account/settings">User Settings</button>
+      <button mat-menu-item routerLink="/account">Account</button>
+      <button mat-menu-item (click)="Logout()">Logout</button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>

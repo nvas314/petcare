@@ -1,0 +1,13 @@
+.container{
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+
+  background: white;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}

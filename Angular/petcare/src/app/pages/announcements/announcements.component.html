@@ -1,0 +1,22 @@
+<div class="container">
+<h1 style="text-align: center;font-size:300%;">Announcements</h1>
+<mat-list>
+<a routerLink="/admin/announcements/new">New Anouncement</a>
+<div *ngFor="let ann of an">
+  <mat-divider></mat-divider>
+  <a mat-list-item [routerLink]="'/announcement/'+ann.id">
+    <h3>{{ann.title}} <button (click)="DeleteAn(ann.id!)">Del</button></h3>
+    <div class="message">
+    {{ann.message?.substring(0,100)}} <div *ngIf="ann.message?.length! > 100">...</div>
+    </div>
+    <div class="date">
+    {{ann.date| date:'d/M/YYYY'}}
+    </div>
+  <div class="post" *ngIf="ann.postId != null">
+    [<a [routerLink]="['/comments/',ann.postId]">Post Source</a>]
+  </div>
+  </a>
+</div>
+<mat-divider></mat-divider>
+ </mat-list>
+</div>

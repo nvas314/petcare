@@ -1,0 +1,34 @@
+<h1>User Details:</h1>
+
+<div *ngIf="user_id != null">
+<div class="container">
+  <mat-card class="card-box">
+      <mat-card-header>
+          <mat-card-title>Account Details</mat-card-title>
+          <mat-card-subtitle>For {{userDetails?.name}} {{userDetails?.middleName}} {{userDetails?.surname}}</mat-card-subtitle>
+      </mat-card-header>
+      <img [src]="image">
+      <mat-card-content>
+        <p><strong>Username:</strong> {{userDetails?.username}}</p>
+        <p><strong>Name:</strong> {{userDetails?.name}}</p>
+        <p><strong>Middle name:</strong> {{userDetails?.middleName}}</p>
+        <p><strong>Surname:</strong> {{userDetails?.surname}}</p>
+        <button mat-stroked-button (click)="sendMessage()">Send a Message</button>
+        <hr class="solid">
+        <div *ngIf="userDetails?.profId != null">
+          <p><strong>Profession:</strong> {{userDetails?.profession}}</p>
+        </div>
+        <hr class="solid">
+        <div *ngIf="userDetails?.instId != null">
+          <div *ngFor="let inst of userDetails?.institution">
+          <p><strong>Institution:</strong> {{inst}}</p>
+          </div>
+        </div>
+        <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'common', id: userDetails?.id}" ><button mat-button class="inst-button">Give Pet</button></a>
+      </mat-card-content>
+
+      <mat-card-footer>
+      </mat-card-footer>
+  </mat-card>
+  </div>
+</div>
