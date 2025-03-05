@@ -8,7 +8,7 @@ docker run --name phpMyAdmin -d --link mariadb123:db -p 8080:80 phpmyadmin/phpmy
 
 //where (PWD) is the password for the database and (NAME) is the db name
 
-Packages:
+Packages (execute commands instide Angular/petcare dir to install packages propoerly):
 npm install -g @angular/cli //Install angular
 ng add @angular/material //angular materaial package //design
 npm install leaflet
