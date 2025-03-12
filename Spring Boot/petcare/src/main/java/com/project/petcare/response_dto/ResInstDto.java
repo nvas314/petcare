@@ -1,6 +1,7 @@
 package com.project.petcare.response_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class ResInstDto {
     private String description;
     private double longitude;
     private double latitude;
+    private String telephone;
     private List<ResUserDto> crew;
 }

@@ -15,34 +15,34 @@ export class AccountService {
 
 
   accountDetails(){
-    return this.http.get<User>(BACKEND_URL+this.PAGE_MAPPING+"/details")
+    return this.http.get<User>(BACKEND_URL+this.PAGE_MAPPING+"/user/details")
   }
 
   changeUsernameOrPassword(change:ChangeUserDetails){
-    return this.http.put<User>(BACKEND_URL+this.PAGE_MAPPING+"/edit",change)
+    return this.http.put<User>(BACKEND_URL+this.PAGE_MAPPING+"/user/edit",change)
   }
 
   deleteAccount(){
-    return this.http.delete<User>(BACKEND_URL+this.PAGE_MAPPING+"/edit")
+    return this.http.delete<User>(BACKEND_URL+this.PAGE_MAPPING+"/user/edit")
   }
 
   addnewImage(formdata:FormData,user_id:number){
-    return this.http.post(BACKEND_URL + "/account/new/image/select/"+user_id.toString(),formdata)
+    return this.http.post(BACKEND_URL + "/auth/signup/image/select/"+user_id.toString(),formdata)
   }
 
   getaccountImage(user_id:number){
-    return this.http.get<string[]>(BACKEND_URL + "/account/image/"+user_id.toString())
+    return this.http.get<string[]>(BACKEND_URL + "/account/user/image/"+user_id.toString())
   }
 
   editDetails(cud:ChangeUserDetails){
-    return this.http.put<ChangeUserDetails>(BACKEND_URL+this.PAGE_MAPPING+"/edit",cud)
+    return this.http.put<ChangeUserDetails>(BACKEND_URL+this.PAGE_MAPPING+"/user/edit",cud)
   }
 
   setAccountImage(formdata:FormData){
-    return this.http.post(BACKEND_URL + "/account/new/image",formdata)
+    return this.http.post(BACKEND_URL + "/account/user/new/image",formdata)
   }
 
   editUserSettings(changes_dto:any){
-    return this.http.put<any>(BACKEND_URL+this.PAGE_MAPPING+"/changesettings",changes_dto)
+    return this.http.put<any>(BACKEND_URL+this.PAGE_MAPPING+"/user/changesettings",changes_dto)
   }
 }

@@ -1,0 +1,10 @@
+.search{
+  position: relative;
+  top:50%;
+  left:40%;
+  padding-top: 10px;
+}
+
+.search-result{
+  margin: 40px;
+}

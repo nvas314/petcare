@@ -44,10 +44,22 @@
 
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef> Action </th>
-    <td mat-cell *matCellDef="let element"> <button mat-button>Timeout</button> <button mat-button>Delete</button> <button mat-button>Change Type</button></td>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="element.status == 'TIMEOUT'"><button mat-button (click)="changeUserStatus(element.id,'TIMEOUT')">Untimeout</button></span>
+      <span *ngIf="element.status != 'TIMEOUT'"><button mat-button (click)="changeUserStatus(element.id,'TIMEOUT')">Timeout</button></span>
+      <button mat-button (click)="deleteUser(element.id)">Delete</button>
+      <button mat-button [matMenuTriggerFor]="menu">Change Type</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="changeUserPrivilages(element.id,'COMMON')">Simple</button>
+        <button mat-menu-item (click)="changeUserPrivilages(element.id,'MANAGER')">Manager</button>
+        <button mat-menu-item (click)="changeUserPrivilages(element.id,'APROVER')">Aprover</button>
+      </mat-menu>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="['id','username','name','middleName','surname','role','status','createdat','action']"></tr>
   <tr mat-row *matRowDef="let row; columns: ['id','username','name','middleName','surname','role','status','createdat','action'];"></tr>
 </table>
 </div>
+
+

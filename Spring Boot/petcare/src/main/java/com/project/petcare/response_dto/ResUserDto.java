@@ -20,11 +20,12 @@ import java.util.List;
 public class ResUserDto {
     Long id;
     String username;
-    //String email;
-    //String telephone;
     String name;
     String surname;
     String middleName;
+    String email;
+    String telephone;
+    String description;
 
     List<Long> instId;
     List<String> institution;

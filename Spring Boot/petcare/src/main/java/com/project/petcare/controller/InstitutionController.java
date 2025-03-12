@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/institutions")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class InstitutionController {
 
     private final InstitutionAndAppService institutionAndAppService;
@@ -27,17 +27,16 @@ public class InstitutionController {
 
     @PostMapping("/admin/new")
     public void NewInstitution(@RequestBody InstDto dto){
-        //if(dto.getLongitude() < 34 || dto.getLongitude() > 42 || dto.getLatitude() < 18 || dto.getLatitude() > 30) return;//Not in Greece
         institutionAndAppService.AddInstitution(dto);
     }
 
-    @GetMapping("/apps/all")
+    @GetMapping("/approve/apps/all")
     public List<ResInstOfficialAppsDto> getAllInstApps(){
         return institutionAndAppService.ApplicationOfficialsDtos();
     }
 
 
-    @PutMapping("/apps/apply")
+    @PutMapping("/approve/apps/apply")
     public void ApplyUserApplication(@RequestBody InstOfficialTypeDto dto){
         institutionAndAppService.ApplyApplication(dto);
     }
@@ -47,28 +46,28 @@ public class InstitutionController {
         institutionAndAppService.MakeApplicationRequest(dto);
     }
 
-    @PutMapping("/app/new/meeting")
+    @PutMapping("/approve/app/new/meeting")
     public void NewMeeting(@RequestBody ApplicationDateDto dto){
         institutionAndAppService.SetApplicationMeeting(dto);
     }
 
-    @GetMapping("/officials/all")
+    @GetMapping("/user/officials/all")
     public List<ResUserDto> getAllInstOfficials(){
         return institutionAndAppService.OfficialsDtos();
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/user/edit")
     public void ChangeOfficialDescription(@RequestBody ChangeDescriptionDto dto){
         if(dto.getDescription() == null) return; //Missing values
         institutionAndAppService.ChangeDescription(dto.getDescription());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public void DeleteInst(@PathVariable Long id){
         institutionAndAppService.DeleteInst(id);
     }
 
-    @DeleteMapping("/apps/{id}")
+    @DeleteMapping("/approve/apps/{id}")
     public void DeleteInstApplication(@PathVariable Long id){
         institutionAndAppService.DeleteOfficial(id);
     }

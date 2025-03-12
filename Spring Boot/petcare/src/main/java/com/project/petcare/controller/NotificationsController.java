@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class NotificationsController {
     private final NotificationService notificationService;
 
@@ -18,28 +18,28 @@ public class NotificationsController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/get")
+    @GetMapping("/user/get")
     public List<ResNotificationDto> getNotifications(){
         return notificationService.getNotificationsForUser();
     }
 
-    @DeleteMapping("/delete/{n_id}")
+    @DeleteMapping("/user/delete/{n_id}")
     public void delNotification(@PathVariable Long n_id){
         notificationService.DeleteNotification(n_id);
     }
 
-    @GetMapping("/givereq/get")
+    @GetMapping("/user/givereq/get")
     public List<ResGiveReqDto> getOwnGiveReq(){
         return notificationService.getGiveRequests();
     }
 
 
-    @PostMapping("/givereq/send")
+    @PostMapping("/user/givereq/send")
     public void getReceivedGiveReq(@RequestBody GiveReqDto dto){
         notificationService.MakeNewSendReq(dto);
     }
 
-    @DeleteMapping("/givereq/delete/{n_id}")
+    @DeleteMapping("/user/givereq/delete/{n_id}")
     public void declineGiveReq(@PathVariable Long n_id){
         notificationService.DeletePetRequest(n_id);
     }

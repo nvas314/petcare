@@ -76,26 +76,16 @@ export class ApplicationsComponent {
     this.instServ.applyUserInstEmpl(dto).subscribe((data) => {this.fetchData()})
   }
 
-  InstScheduleDate(id:number,datetime:number){
-    // const appd = new ApplicationDateDto()
-    // appd.id = id
-    // appd.datetime = 1
-    // this.instServ.scheduleMeeting(appd).subscribe((data) => {this.fetchData()})
-  }
-
   InstDelete(id:number){
     this.instServ.delInstEmpl(id).subscribe((data) => {this.fetchData()})
   }
 
   ProfApply(id:number){
-    this.profServ.applyUserProfApp(id).subscribe((data) => {this.fetchData()})
-  }
-
-  ProfScheduleDate(id:number,datetime:number){
-    // const appd = new ApplicationDateDto()
-    // appd.datetime = id;
-    // appd.datetime = 1
-    // this.profServ.scheduleMeeting(appd).subscribe((data) => {this.fetchData()})
+    this.profServ.applyUserProfApp(id).subscribe((data) => {
+      this.ProfDelete(id)
+      this.fetchData()
+    }
+    )
   }
 
   ProfDelete(id:number){

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostsSidebarComponent } from './posts-sidebar.component';
+import { AccessDeniedComponent } from './access-denied.component';
 
-describe('PostsSidebarComponent', () => {
-  let component: PostsSidebarComponent;
-  let fixture: ComponentFixture<PostsSidebarComponent>;
+describe('AccessDeniedComponent', () => {
+  let component: AccessDeniedComponent;
+  let fixture: ComponentFixture<AccessDeniedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PostsSidebarComponent]
+      imports: [AccessDeniedComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PostsSidebarComponent);
+    fixture = TestBed.createComponent(AccessDeniedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@PropertySource("file:${user.dir}/.env")
+@PropertySource("file:${user.dir}/.env") //Secret Key
 public class PetcareApplication {
 
 	public static void main(String[] args) {

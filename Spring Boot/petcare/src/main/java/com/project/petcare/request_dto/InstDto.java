@@ -2,10 +2,7 @@ package com.project.petcare.request_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,6 +16,8 @@ public class InstDto {
     @NotBlank
     private String name;
     private String description;
+
+    private String telephone;
 
     @NotNull
     @NotBlank

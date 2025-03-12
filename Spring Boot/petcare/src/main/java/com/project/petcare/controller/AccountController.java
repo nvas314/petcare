@@ -19,70 +19,43 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AccountController {
-    UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
+
     UserService userService;
 
-    public AccountController(UserRepository userRepository, PasswordEncoder passwordEncoder, UserService userService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AccountController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/details")
+    @GetMapping("/user/details")
     public ResUserDto authenticateToken() {
-        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findById(u.getId()).orElseThrow();
-        ResUserDto resUserDto = new ResUserDto();
-        resUserDto.setId(user.getId());
-        resUserDto.setUsername(user.getUsername());
-        resUserDto.setName(user.getName());
-        resUserDto.setMiddleName(user.getMiddleName());
-        resUserDto.setSurname(user.getSurname());
-        resUserDto.setStatus(user.getStatus());
-        resUserDto.setRole(user.getRole());
-
-        return resUserDto;
+        return userService.ReturnLoggedInUserDetails();
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/user/edit")
     public void changeDetails(@RequestBody UserChangesDto changes) {
         userService.editUser(changes);
     }
 
-    @PutMapping("/changesettings")
+    @PutMapping("/user/changesettings")
     public void changeUserSettings(@RequestBody ChangeAccountSettingsDto changes) {
         userService.changeAccountSettings(changes);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteUser() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setStatus(AppConstants.User.UserStatus.DELETED);
-        user.setPassword(null);
-        userRepository.save(user);
-    }
-
-    @GetMapping("/image/{user_id}")
+    @GetMapping("/user/image/{user_id}")
     public ResponseEntity<List<String>> getPostImage(@PathVariable Long user_id) throws IOException {
         System.out.println("Looking for image: ");
         List<String> image = userService.getAccountImage(user_id);
         return ResponseEntity.ok(image);
     }
 
-    @PostMapping("/new/image")
+    @PostMapping("/user/new/image")
     public ResponseEntity<Object> addLostPost(@RequestPart("image") List<MultipartFile> mpf) throws IOException, InterruptedException {
         userService.setAccountImage(mpf);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/new/image/select/{user_id}")
-    public ResponseEntity<Object> addImageToNewAccount(@RequestPart("image") List<MultipartFile> mpf , @PathVariable Long user_id) throws IOException, InterruptedException {
-        userService.setAccountImageUser(mpf,user_id);
-        return ResponseEntity.ok().build();
-    }
 
 
 }

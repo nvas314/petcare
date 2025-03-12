@@ -5,11 +5,12 @@ import { Announcement } from '../../models/announcement.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-announcements',
   imports: [RouterModule,NgFor,NgIf,DatePipe,
-    MatList,MatListItem,MatDivider
+    MatList,MatListItem,MatDivider,MatButton,MatButtonModule
   ],
   templateUrl: './announcements.component.html',
   styleUrl: './announcements.component.css'
@@ -17,8 +18,12 @@ import { MatDivider } from '@angular/material/divider';
 export class AnnouncementsComponent {
 
   an:Announcement[] = []
+  hasManagerPrivs = false //Only managers and up can delete announcements
 
   constructor(private serv:AnnouncementService){
+    if((localStorage.getItem('role') == "MANGAGER") || (localStorage.getItem('role') == "APPROVER") || (localStorage.getItem('role') == "ADMIN")){
+      this.hasManagerPrivs = true
+    }
     this.fetch()
   }
 

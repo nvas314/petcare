@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -44,6 +45,7 @@ public class PostService {
     public void createPost(PostDto postDto, List<MultipartFile> mpf) throws IOException {
         User fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         fromuser = userRepository.findById(fromuser.getId()).orElseThrow();
+        if(fromuser.getStatus() == AppConstants.User.UserStatus.TIMEOUT) return;//Timedout users cannot make posts
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setLatitude(postDto.getLatitude());
@@ -91,9 +93,23 @@ public class PostService {
             mpfile.transferTo(new File(imagePath+PathFolder+ Integer.toString(mpfCount)));
         }
 
-        if(post.getStatus() == AppConstants.Post.PostStatus.EMERGENCY){
-            notificationService.MakeNotificationForUser(post.getUser(),post,"EMERGENCY","There is a pet needing your help!");
+        if(post.getStatus() == AppConstants.Post.PostStatus.EMERGENCY && post.getType() == AppConstants.Post.PostType.FOUND){
+            List<Profession> professionals = (List<Profession>) profRepository.findAll();
+            professionals.forEach(professional ->
+                    notificationService.MakeNotificationForUser(professional.getUser(),post,"EMERGENCY","There is a pet needing your help!")
+            );//Send to all the professionals
         }
+    }
+
+
+    public List<ResPostDto> FindLostPosts(){
+        List<Post> postsRepo = postRepository.findByType(AppConstants.Post.PostType.LOST);
+        return PostToResDtoList(postsRepo);
+    }
+
+    public List<ResPostDto> FindFoundPosts(){
+        List<Post> postsRepo = postRepository.findByType(AppConstants.Post.PostType.FOUND);
+        return PostToResDtoList(postsRepo);
     }
 
     public List<ResPostDto> PostToResDtoList(List<Post> posts){
@@ -122,14 +138,21 @@ public class PostService {
         resPostDto.setAnimalHolderId(post.getAnimalHolderId());
         resPostDto.setType(post.getType());
 
-        resPostDto.setUsername(post.getUser().getUsername());
-        resPostDto.setName(post.getUser().getName());
-        resPostDto.setSurname(post.getUser().getSurname());
-        resPostDto.setMiddleName(post.getUser().getMiddleName());
 
         if(resPostDto.getHolder() == AppConstants.Post.AnimalHolder.COMMON){
+            User user_holder = userRepository.findById(post.getAnimalHolderId()).orElseThrow();
+            resPostDto.setUsername(user_holder.getUsername());
+            resPostDto.setName(user_holder.getName());
+            resPostDto.setSurname(user_holder.getSurname());
+            resPostDto.setMiddleName(user_holder.getMiddleName());
         } else if (resPostDto.getHolder() == AppConstants.Post.AnimalHolder.VET) {
-            resPostDto.setProfession(profRepository.findById(resPostDto.getAnimalHolderId()).orElseThrow().getProfession());
+            Profession prof_holder = profRepository.findById(post.getAnimalHolderId()).orElseThrow();
+            User user_holder = prof_holder.getUser();
+            resPostDto.setProfession(prof_holder.getProfession());
+            resPostDto.setUsername(user_holder.getUsername());
+            resPostDto.setName(user_holder.getName());
+            resPostDto.setSurname(user_holder.getSurname());
+            resPostDto.setMiddleName(user_holder.getMiddleName());
         }else {
             resPostDto.setInstName(institutionRepository.findById(resPostDto.getAnimalHolderId()).orElseThrow().getName());
         }
@@ -143,14 +166,11 @@ public class PostService {
         for (int i = 1; i <= 5; i++) {
             File file = new File(Path+i);
             if (!file.exists()) break;
-            //System.out.println(imagePath+"/"+post_id+"/"+1);
-            //InputStream is = getClass().getResourceAsStream(imagePath+"/"+post_id+"/"+id);
             try {
                 is = new FileInputStream(Path+i);
                 images.add(is.readAllBytes());
             } catch (FileNotFoundException ignored) {
             }
-            //InputStream is = new FileInputStream("C:\\data\\41\\1");
 
         }
         List<String> base64images = new ArrayList<>();
@@ -176,8 +196,7 @@ public class PostService {
 
     public void takePet(Long post_id, Long to_id , String type){
         Post post = postRepository.findById(post_id).orElseThrow();
-        User fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //if(post.getUser().getId() != fromuser.getId())return;
+        if (post.getType() == AppConstants.Post.PostType.LOST) return; // Lost animals cannot be traded
         post.setAnimalHolderId(to_id);
         switch (type) {
             case "u" -> {
@@ -198,17 +217,28 @@ public class PostService {
 
     public void setPostStatus(Long post_id , String post_status){
         AppConstants.Post.PostStatus status;
-        if(post_status == "emergency"){
-            status = AppConstants.Post.PostStatus.EMERGENCY;
-        }
-        else if(post_status == "returned"){
-            status = AppConstants.Post.PostStatus.RETURNED;
-        }
-        else {
-            return;
+        System.out.println(post_status);
+        User fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        switch (post_status) {
+            case "emergency" -> status = AppConstants.Post.PostStatus.EMERGENCY;
+            case "returned" -> status = AppConstants.Post.PostStatus.RETURNED;
+            case "missing" -> status = AppConstants.Post.PostStatus.MISSING;
+            case null, default -> {
+                return;
+            }
         }
         Post post = postRepository.findById(post_id).orElseThrow();
+        //if(!Objects.equals(post.getUser().getId(), fromuser.getId())) return; //Only post owner can change the status
         post.setStatus(status);
         postRepository.save(post);
+    }
+
+    public ResPostDto FindPost(Long id){
+        Post post = postRepository.findById(id).orElseThrow();
+        return PostToResDto(post);
+    }
+
+    public void DeletePost(Long id){
+        postRepository.deleteById(id);
     }
 }

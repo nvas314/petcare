@@ -23,11 +23,11 @@ export class PostService {
   }
 
   getOwnPosts(){
-    return this.http.get<Post[]>(BACKEND_URL + "/posts/own")
+    return this.http.get<Post[]>(BACKEND_URL + "/posts/user/own")
   }
 
   addPost(post:any){
-    return this.http.post<Post>(BACKEND_URL + "/posts/new",post)
+    return this.http.post<Post>(BACKEND_URL + "/posts/user/new",post)
   }
 
   getPost(id:string){
@@ -39,11 +39,14 @@ export class PostService {
   }
 
   givePetReq(giveReq:GiveReq){
-    return this.http.post<GiveReq>(BACKEND_URL + "/notifications/givereq/send",giveReq)
+    return this.http.post<GiveReq>(BACKEND_URL + "/notifications/user/givereq/send",giveReq)
   }
 
   setOwnPostStatus(post_id:number,status:string){
-    return this.http.get<Post>(BACKEND_URL + "/post/set/"+post_id+"/"+status+"/")
+    return this.http.get<Post>(BACKEND_URL + "/posts/user/set/"+post_id+"/"+status)
   }
 
+  delPost(id:number){
+    return this.http.delete<Post>(BACKEND_URL + "/posts/manage/"+id)
+  }
 }

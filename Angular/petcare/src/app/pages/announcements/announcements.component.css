@@ -28,3 +28,9 @@ a[mat-list-item]:nth-child(n){
   right: 16px;
   font-size: 18px;
 }
+
+.new-button{
+  position: absolute;
+  top: 110px;
+  right: 10px;
+}

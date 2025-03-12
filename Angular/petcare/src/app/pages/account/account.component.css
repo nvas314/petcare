@@ -12,3 +12,11 @@
   margin: 100px;
   width: 400px;
 }
+
+.search-button{
+  position: absolute;
+  right: 10px;
+  top: 110px;
+  margin: 5px;
+  margin-bottom: 10px;
+}

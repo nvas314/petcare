@@ -1,6 +1,6 @@
 .paragraph{
   height: 100vh;
-  width: 120%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -30,9 +30,28 @@
 
 .text{
   height: 300px;
+  width:700px;
+  position: absolute;
 }
 
 img{
   height: 600px;
   width: 1000px;
+  position: absolute;
+}
+
+.title{
+  font-size: 100px;
+  font-weight: 300;
+  width:100%;
+  padding-top: 350px;
+  text-align: center;
+}
+
+.subtitle{
+  font-size: 50px;
+  font-weight: 300;
+  width:100%;
+  margin-top: 100px;
+  text-align: center;
 }

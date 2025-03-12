@@ -25,6 +25,7 @@ import { UserSearchComponent } from './pages/user-search/user-search.component';
 import { OwnPostsComponent } from './pages/own-posts/own-posts.component';
 import { EditAccountComponent } from './pages/account/edit-account/edit-account.component';
 import { ShowAnnouncementComponent } from './pages/announcements/show-announcement/show-announcement.component';
+import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 
 export const routes: Routes = [
   {path:'posts/found' , component:FoundComponent},
@@ -50,6 +51,7 @@ export const routes: Routes = [
   {path:'myposts' , component:OwnPostsComponent},
   {path:'admin/users' , component:UsersComponent},
   {path:'' , component:MainComponent},
+  {path:'denied' , component:AccessDeniedComponent},
   {path:'**' , component:NotFoundComponent}
 ];
 

@@ -4,15 +4,13 @@ public class AppConstants {
     public static final class User{
         public enum UserRole{
             ADMIN,
-            APROVER,
+            APPROVER,
             MANAGER,
             COMMON
         }
         public enum UserStatus{
             ACTIVE,
-            TIMEOUT,
-            BANNED,
-            DELETED
+            TIMEOUT
         }
     }
     public static final class Post{
@@ -24,7 +22,7 @@ public class AppConstants {
             MISSING,
             RETURNED,
             EMERGENCY,
-            ADOPTED
+            ADOPTION
         }
         public enum  AnimalHolder{
             COMMON,
@@ -35,8 +33,7 @@ public class AppConstants {
     public static final class InstOfficial{
         public enum InstOfficialType{
             APPLICATION,
-            COMMON,
-            MANAGER //Can invite other employees
+            COMMON
         }
     }
     public static final class Notification{

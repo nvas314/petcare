@@ -1,3 +1,4 @@
+import { UserGeneralService } from './../../services/user-general.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -11,6 +12,9 @@ import { MatButton } from '@angular/material/button';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UserService } from '../../services/user.service';
+import { UserCommonView } from '../../models/user-details.model';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-post-comments',
@@ -23,14 +27,27 @@ import { MatInputModule } from '@angular/material/input';
 export class PostCommentsComponent {
   post!:Post;
   c!:PostComment[];
+  u!:UserCommonView[];
+  fullname = new Map()
+
   post_id !: string;
+  timedout :boolean | null = false;
 
   constructor(
     private pserv:PostService,
+    private userv:UserGeneralService,
     private cserv:CommentService,
     private route:ActivatedRoute,
     private cdr:ChangeDetectorRef,
-  ){this.show();}
+  ){
+    if(localStorage.getItem('userid') == null) this.timedout = true
+    userv.ShowUserDetails(localStorage.getItem('userid')!).subscribe((data:UserCommonView) => {
+      if(data.status == "TIMEOUT"){
+        this.timedout = true
+      }
+    })
+    this.show();
+  }
 
   ngOnInit(){
     this.show();
@@ -44,7 +61,14 @@ export class PostCommentsComponent {
       this.cdr.detectChanges();
     })
     this.cserv.getComments(this.post_id).subscribe((data:PostComment[]) => {
-            this.c = data;
+        this.c = data;
+        data.forEach(cmnt => {
+          this.userv.ShowUserDetails(cmnt.userid?.toString()!).subscribe((data:UserCommonView) => {
+            let fullname = data.name + " " + data.middleName + " " + data.surname
+            fullname = fullname.replace("  "," ") //No Middlename
+            this.fullname.set(cmnt.userid , fullname)
+          })
+        });
     })
   }
 

@@ -19,4 +19,12 @@ public class ResNotificationDto {
     private String title;
     private String message;
     private Long postId;
+
+    public ResNotificationDto(Long id, Timestamp timestamp, String title, String message) {
+
+        this.id = id;
+        this.timestamp = timestamp;
+        this.title = title;
+        this.message = message;
+    }
 }

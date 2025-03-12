@@ -4,6 +4,9 @@
     <mat-expansion-panel-header>
         <div [matBadge]="post.status" matBadgeOverlap="true" class="condition-badge"></div>
       <mat-panel-description>
+        <div *ngIf="!iscommonuser">
+          <button (click)="DelPost(); $event.stopPropagation()" style="position: absolute;right: 160px;top:7%;">Del</button>
+        </div>
 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
@@ -17,23 +20,16 @@
 
          <div>
           <h3 class="post-title">{{ post.title }}</h3>
-          <p><strong>Name:</strong> {{ post.animalName }}</p>
+          <div *ngIf="post.animalName != null"><p><strong>Name:</strong> {{ post.animalName }}</p></div>
           <p><strong>Animal:</strong> {{ post.animal }}</p>
-          <p><strong>Breed:</strong> {{ post.breed }}</p>
-          <p><strong>CollarText:</strong> {{ post.collarText }}</p>
-          <p><strong>Health Condition:</strong> {{ post.healthCondition }}</p>
-          <div *ngIf="post.holder == 'COMMON'">
-            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
-          </div>
-          <div *ngIf="post.holder == 'VET'">
-            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
-          </div>
-          <div *ngIf="post.holder == 'INSTITUTION'">
-            <p><strong>Holder:</strong> {{ post.holder }}  {{ post.animalHolderId }} </p>
-          </div>
+          <div *ngIf="post.breed != ''"><p><strong>Breed:</strong> {{ post.breed }}</p></div>
+          <div *ngIf="post.collarText != ''"><p><strong>CollarText:</strong> {{ post.collarText }}</p></div>
+          <div *ngIf="post.healthCondition != ''"><p><strong>Health Condition:</strong> {{ post.healthCondition }}</p></div>
+          <div *ngIf="isfoundcomponent == true"><p><strong>Holder:</strong> {{getFrom()}} </p></div>
+          <div *ngIf="isfoundcomponent == false"><p><strong>Created:</strong> {{getFrom()}} </p></div>
         </div>
       </mat-panel-description>
-      <div class="angle-up">{{post.timestamp| date:'d/M/y'}}</div>
+      <div class="angle-up">{{post.timestamp| date:'HH:mm,d/M/y'}}</div>
     </mat-expansion-panel-header>
     <app-post-box-secondary [post]="post"></app-post-box-secondary>
   </mat-expansion-panel>

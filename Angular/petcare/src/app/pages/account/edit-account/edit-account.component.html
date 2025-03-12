@@ -5,14 +5,14 @@
 <form [formGroup]="edit_form" (ngSubmit)="SaveChanges()">
   <div>
     <mat-form-field class="center" appearance="outline">
-        <mat-label>Username</mat-label>
+        <mat-label>Username [If changed , login required again with new username]</mat-label>
         <input type="text" matInput formControlName="username">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="center" appearance="outline">
         <mat-label>Password [Leave Empty for no changes]</mat-label>
-        <input type="password" matInput formControlName="usernpasswordame">
+        <input type="password" matInput formControlName="password">
     </mat-form-field>
   </div>
   <div>

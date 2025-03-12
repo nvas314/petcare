@@ -1,6 +1,6 @@
   <div class="container">
     <h1 style="text-align: center;padding-top: 10px ;">New Post</h1>
-  <form [formGroup]="post_form" (ngSubmit)="SumbitPost()">
+  <form [formGroup]="post_form">
 
     <div>
       <mat-form-field class="center" appearance="outline">
@@ -26,7 +26,11 @@
     <div>
       <mat-form-field class="center" appearance="outline">
         <mat-label>Animal</mat-label>
-        <input matInput type="text" matInput formControlName="animal">
+        <mat-select formControlName="animal">
+          <div *ngFor="let a of animal_List">
+            <mat-option [value]="a">{{a}}</mat-option>
+          </div>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -75,15 +79,23 @@
     <div>
       <mat-radio-group aria-label="Holder Type" formControlName="holder">
         <mat-radio-button value="COMMON">Self</mat-radio-button>
-        <mat-radio-button value="VET">Professional</mat-radio-button>
-        <mat-radio-button value="INSTITUTION">Institution</mat-radio-button>
+        <span *ngIf="is_professional">
+          <mat-radio-button value="VET">Professional</mat-radio-button>
+        </span>
+        <span *ngIf="my_institutions.length > 0">
+          <mat-radio-button value="INSTITUTION">Institution</mat-radio-button>
+        </span>
       </mat-radio-group>
     </div>
 
     <div *ngIf="post_form.get('holder')?.value === 'INSTITUTION'">
       <mat-form-field class="center" appearance="outline">
         <mat-label>Institution Name</mat-label>
-        <input matInput type="text" formControlName="instName">
+        <mat-select formControlName="instName">
+          <div *ngFor="let inst of my_institutions">
+            <mat-option [value]="inst">{{inst}}</mat-option>
+          </div>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -94,12 +106,18 @@
   </div>
 
     <div>
-    <mat-form-field class="center" appearance="outline">
-      <mat-label>At Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="timestamp">
-      <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-form-field appearance="outline" style="width: 40%;margin-left: 5%;margin-right: 5%;">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" (ngModelChange)="onDateChange()" formControlName="date">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 40%;margin-left: 5%;margin-right: 5%;">
+      <mat-label>Time</mat-label>
+      <input matInput
+        [matTimepicker]="timepicker1" (ngModelChange)="onDateChange()" formControlName="time">
+      <mat-timepicker #timepicker1/>
+      <mat-timepicker-toggle [for]="timepicker1" matSuffix/>
     </mat-form-field>
   </div>
 <div *ngFor="let item of [].constructor(a); let i = index">
@@ -111,7 +129,7 @@
 <app-map-input (postiionChanged)="changeCrendentials($event)" [lon]="lonInput" [lat]="latInput"></app-map-input>
 
 <div class="center">
-  <button mat-stroked-button>Add Post</button>
+  <button mat-stroked-button (click)="SumbitPost()">Add Post</button>
 </div>
 
 </form>

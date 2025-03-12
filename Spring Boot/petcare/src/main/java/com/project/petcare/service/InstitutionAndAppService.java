@@ -17,6 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,13 +32,15 @@ public class InstitutionAndAppService {
     InstitutionOfficialsRepository institutionOfficialsRepository;
     UserRepository userRepository;
     UserService userService;
+    NotificationService notificationService;
     User userLoggedIn;
 
-    public InstitutionAndAppService(InstitutionRepository institutionRepository, InstitutionOfficialsRepository institutionOfficialsRepository, UserRepository userRepository, UserService userService) {
+    public InstitutionAndAppService(InstitutionRepository institutionRepository, InstitutionOfficialsRepository institutionOfficialsRepository, UserRepository userRepository, UserService userService, NotificationService notificationService) {
         this.institutionRepository = institutionRepository;
         this.institutionOfficialsRepository = institutionOfficialsRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     public void AddInstitution(InstDto dto){
@@ -44,6 +49,7 @@ public class InstitutionAndAppService {
         institution.setDescription(dto.getDescription());
         institution.setLongitude(dto.getLongitude());
         institution.setLatitude(dto.getLatitude());
+        institution.setTelephone(dto.getTelephone());
         institutionRepository.save(institution);
     }
 
@@ -62,13 +68,17 @@ public class InstitutionAndAppService {
     public void SetApplicationMeeting(ApplicationDateDto dto){
         InstOfficial application = institutionOfficialsRepository.findById(dto.getId()).orElseThrow();
         application.setDatetime(dto.getDatetime());
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date  = new Date(dto.getDatetime().getTime());
+        String dateString = df.format(date);
+        notificationService.MakeNotificationForUser(application.getUser(),null, "New Meeting for Institution Official Application","A new meeting has been organized at " + dateString);
         institutionOfficialsRepository.save(application);
     }
 
     public void ApplyApplication(InstOfficialTypeDto dto){
         InstOfficial application = institutionOfficialsRepository.findById(dto.getId()).orElseThrow();
         if (application.getType()!= AppConstants.InstOfficial.InstOfficialType.APPLICATION){
-            return;
+            return; //Already in the institution
         }
         application.setType(dto.getType());
         institutionOfficialsRepository.save(application);
@@ -113,6 +123,7 @@ public class InstitutionAndAppService {
                         m.getDescription(),
                         m.getLongitude(),
                         m.getLatitude(),
+                        m.getTelephone(),
                         m.getOfficials().stream().map(o ->
                                 new ResUserDto(
                                         o.getUser().getId(),

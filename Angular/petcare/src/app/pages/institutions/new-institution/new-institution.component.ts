@@ -23,7 +23,8 @@ export class NewInstitutionComponent {
     name : new FormControl(),
     description : new FormControl(),
     longitude : new FormControl(""),
-    latitude : new FormControl("")
+    latitude : new FormControl(""),
+    telephone : new FormControl(),
   })
 
     constructor(private serv:InstitutionService,

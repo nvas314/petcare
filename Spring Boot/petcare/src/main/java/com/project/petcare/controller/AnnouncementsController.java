@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/announcements")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AnnouncementsController {
 
     private final AnnouncementService announcementService;

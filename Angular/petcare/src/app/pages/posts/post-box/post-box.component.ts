@@ -20,13 +20,23 @@ import { MatBadge } from '@angular/material/badge';
 })
 export class PostBoxComponent {
   @Input() post!:Post;
+  @Input() isfoundcomponent!:boolean;
+  iscommonuser : boolean = true;
   imageUrl: SafeUrl | null = null;
   postImages : string[] = [];
+  from:string =""
 
   constructor(private serv:PostService, private sanitizer: DomSanitizer , private cdr:ChangeDetectorRef){
+    if(localStorage.getItem('role') == "COMMON"){
+      this.iscommonuser = true
+    }
+    else{
+      this.iscommonuser  = false
+    }
   }
 
   ngOnInit(){
+    this.getFrom()
     this.loadImage();
   }
 
@@ -40,6 +50,32 @@ export class PostBoxComponent {
     });
 }
 
+getFrom(){
+  let string = ""
+  if(this.post.holder == "COMMON"){
+    string = this.post.name + " " + this.post.middleName + " " + this.post.surname
+    string = string.replace("  "," ")//if no middlename
+    return "By " + string
+  }
+  if(this.post.holder == "VET"){
+    string = this.post.name + " " + this.post.middleName + " " + this.post.surname
+    string = string.replace("  "," ")//if no middlename
+    string = string + " , " + this.post.profession
+    return "By " + string
+  }
+  if(this.post.holder == "INSTITUTION"){
+    string = this.post.instName!
+    return "In " + string + " institution"
+  }
+  return
+}
+
+DelPost(){
+  this.serv.delPost(this.post.id!).subscribe((data)=>{
+    this.cdr.detectChanges();
+    location.reload()
+  })
+}
 
 
 i = 0;

@@ -1,11 +1,17 @@
 <div class="container">
+<div style="background-color: blanchedalmond;min-height: 100%;padding: 10px;">
 <h1 style="text-align: center;font-size:300%;">Announcements</h1>
 <mat-list>
-<a routerLink="/admin/announcements/new">New Anouncement</a>
+<div *ngIf="hasManagerPrivs">
+  <a routerLink="/admin/announcements/new" class="new-button"><button mat-stroked-button>New Anouncement</button></a>
+</div>
 <div *ngFor="let ann of an">
   <mat-divider></mat-divider>
+  <div *ngIf="hasManagerPrivs">
+    <button (click)="DeleteAn(ann.id!)">Del</button>
+  </div>
   <a mat-list-item [routerLink]="'/announcement/'+ann.id">
-    <h3>{{ann.title}} <button (click)="DeleteAn(ann.id!)">Del</button></h3>
+    <h3>{{ann.title}} </h3>
     <div class="message">
     {{ann.message?.substring(0,100)}} <div *ngIf="ann.message?.length! > 100">...</div>
     </div>
@@ -19,4 +25,5 @@
 </div>
 <mat-divider></mat-divider>
  </mat-list>
+</div>
 </div>

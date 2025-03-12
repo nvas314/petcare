@@ -18,10 +18,10 @@ export class CommentService {
   }
 
   addComments(post_id:string , comment:PostComment){
-    return this.http.post<PostComment>(BACKEND_URL+"/comments/" + post_id,comment);
+    return this.http.post<PostComment>(BACKEND_URL+"/comments/user/" + post_id,comment);
   }
 
   deleteComment(comment_id:string){
-    return this.http.delete<PostComment>(BACKEND_URL+"/comments/"+comment_id)
+    return this.http.delete<PostComment>(BACKEND_URL+"/comments/manage/"+comment_id)
   }
 }

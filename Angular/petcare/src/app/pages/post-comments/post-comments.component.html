@@ -1,26 +1,28 @@
 <div class="container-s">
 <div *ngIf="post != null" style="margin-top: 20px;">
-<app-post-box [post]="post"></app-post-box>
+<app-post-box [post]="post" [isfoundcomponent]="false"></app-post-box>
 </div>
 <h1 style="text-align: center;font-size: 400%;">Comments</h1>
 
 <div class="container-comments">
 <div *ngFor="let comment of c">
-  <div class="comment"><a routerLink="/user/{{comment?.userid}}">{{comment?.username}}</a>:{{comment?.comment}}
+  <div class="comment"><a routerLink="/user/{{comment?.userid}}">{{fullname.get(comment.userid)}}</a>:{{comment?.comment}}
     <button (click)="deleteComment(comment?.id!)">del</button></div>
 
 </div>
 
 </div>
-<div class="form">
+<div class="form"  *ngIf="!timedout">
 <form [formGroup]="form" (ngSubmit)="Sumbit()" class="form-container">
 <div class="input-container">
   <mat-form-field appearance="outline">
       <mat-label>New Comment</mat-label>
-      <input type="text" matInput formControlName="comment">
+      <input type="text" matInput formControlName="comment" [disabled]="timedout!" [placeholder]="timedout ? 'Youhave been timed out' : ''">
   </mat-form-field>
 </div>
-<button mat-stroked-button type="submit">Add Comment</button>
+<div>
+<button mat-stroked-button type="submit" >Add Comment</button>
+</div>
 </form>
 </div>
 </div>

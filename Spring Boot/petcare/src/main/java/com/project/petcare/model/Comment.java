@@ -1,6 +1,7 @@
 package com.project.petcare.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Comment {
     private Timestamp timestamp;
 
     @NotNull
+    @NotBlank
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

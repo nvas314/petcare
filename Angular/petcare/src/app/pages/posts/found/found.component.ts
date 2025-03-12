@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, signal } from '@angular/core';
-import { PostsSidebarComponent } from "../posts-sidebar/posts-sidebar.component";
 import { PostBoxComponent } from "../post-box/post-box.component";
 import { UserService } from '../../../services/user.service';
 import { Post } from '../../../models/post.model';
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { RouteConfigLoadEnd, RouterModule, RouterOutlet } from '@angular/router';
 import { PostBoxSecondaryComponent } from "../post-box-secondary/post-box-secondary.component";
 import { PostService } from '../../../services/post.service';
@@ -22,16 +21,20 @@ import { MatAutocomplete, MatAutocompleteModule, MatOption } from '@angular/mate
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatSlider } from '@angular/material/slider';
 import { MatSelect } from '@angular/material/select';
+import { Animal_List } from '../../../../constants';
+import { UserGeneralService } from '../../../services/user-general.service';
+import { UserCommonView } from '../../../models/user-details.model';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-found',
   providers: [provideNativeDateAdapter()],
-  imports: [PostsSidebarComponent, PostBoxComponent, NgFor, PostBoxComponent, RouterModule, PostBoxSecondaryComponent,HeaderComponent,FormsModule,
-    MatExpansionModule, MatSidenavContainer, MatNavList, MatListItem, MatSidenavContent, MatSidenav, HeaderComponent,MatToolbar,MatButton,MatButtonModule,MatCheckbox,MatFormField,MatLabel,MatAutocomplete,MatOption,AsyncPipe,ReactiveFormsModule,MatAutocompleteModule,MatInputModule,FormsModule,MatFormFieldModule,ReactiveFormsModule,
+  imports: [ PostBoxComponent, NgFor, PostBoxComponent, RouterModule, PostBoxSecondaryComponent,HeaderComponent,FormsModule,DecimalPipe,NgIf,
+    MatExpansionModule, MatSidenavContainer, MatNavList, MatListItem, MatSidenavContent, MatSidenav, HeaderComponent,MatToolbar,MatButton,MatButtonModule,MatCheckbox,MatFormField,MatLabel,MatAutocomplete,MatOption,AsyncPipe,ReactiveFormsModule,MatAutocompleteModule,MatInputModule,FormsModule,MatFormFieldModule,ReactiveFormsModule,MatCard,MatCardContent,
     MatFormFieldModule, MatInputModule, MatDatepickerModule,MatPaginator, MatTimepickerModule,MatNativeDateModule,MatSlider,MatSelect ],
   templateUrl: './found.component.html',
   styleUrl: './found.component.css',
@@ -40,35 +43,49 @@ import { MatSelect } from '@angular/material/select';
 export class FoundComponent {
 
   p: Post[] = [];
+  p_filtered: Post[] = [];
   p_show: Post[] = [];
+  timedout = false
+  user_role = ""
 
   isEmergency:boolean = false;
   isAdopted:boolean = false;
   isReturned:boolean = false;
   inInstitution:boolean = false;
   isAtDoctor:boolean = false;
+  Returned:boolean = false;
 
+  animal_List = Animal_List
   searchText:string =  ""
   searchAnimal:string = ""
   sortBy:string = ""
 
   constructor(private serv:PostService,
+    private userv:UserGeneralService,
     private cdr: ChangeDetectorRef,
   ){
+    this.user_role = localStorage.getItem('role')!
+    this.searchAnimal = 'All'
+    userv.ShowUserDetails(localStorage.getItem('userid')!).subscribe((data:UserCommonView) => {
+      if(data.status == "TIMEOUT"){
+        this.timedout = true
+      }
+    })
+    console.log(this.timedout)
   }
 
   ngOnInit(){
-
     this.serv.getFoundPosts().subscribe((data:Post[]) => {
       this.p = data;
-      this.p_show = data;
+      this.p_filtered = data;console.log(data)
       this.cdr.detectChanges();
+      this.filter()
+      this.ShowPage(0)
     })
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    this.filter()
   }
 
   readonly panelOpenState = signal(false);//For sidenav
@@ -93,36 +110,47 @@ export class FoundComponent {
   filter(){
     let searchText = this.searchText.toLocaleLowerCase()
     let searchAnimal = this.searchAnimal.toLocaleLowerCase()
+    this.p_filtered = this.p
     //Date
     let timestamp;
-    if((this.selectedDayFrom == null || this.selectedTimeFrom == null || this.selectedDayTo == null || this.selectedTimeTo == null) &&
-    (this.selectedDateFrom! > this.selectedDateTo!)){
-      this.p_show = this.p_show.filter(s=> {
+    if(!(this.selectedDayFrom == null || this.selectedTimeFrom == null || this.selectedDayTo == null || this.selectedTimeTo == null) &&
+    (this.selectedDateFrom! < this.selectedDateTo!)){
+      this.p_filtered = this.p_filtered.filter(s=> {
         timestamp = new Date(s.timestamp!);
         return ((timestamp >= this.selectedDateFrom!) && (timestamp <= this.selectedDateTo!));
         })
     }
-    this.p_show = this.p_show.filter(s=> s.title!.toLocaleLowerCase().includes(searchText) ||
-    s.animalName!.toLocaleLowerCase().includes(searchText))
-    this.p_show = this.p_show.filter(s=> s.animal!.toLocaleLowerCase().includes(searchAnimal))
+    this.p_filtered = this.p_filtered.filter(s=> s.title!.toLocaleLowerCase().includes(searchText))
+    if(searchAnimal != 'all'){
+      this.p_filtered = this.p_filtered.filter(s=> s.animal!.toLocaleLowerCase().includes(searchAnimal))
+    }
     //checkboxes , searchtext
     if(this.isEmergency){
-      this.p_show = this.p_show.filter(s=> s.status == "EMERGENCY")
+      this.p_filtered = this.p_filtered.filter(s=> s.status == "EMERGENCY")
     }
     if(this.isAdopted){
-      this.p_show = this.p_show.filter(s=> s.status == "ADOPT")
+      this.p_filtered = this.p_filtered.filter(s=> s.status == "ADOPT")
     }
-    //SortBy
-    if(this.sortBy = "distance"){
+    if(this.inInstitution && this.isAtDoctor){
+      this.p_filtered = this.p_filtered.filter(s=> s.holder != "COMMON")//Not User
     }
-    else if (this.sortBy = "date"){
-      this.p_show = this.p_show.sort((a,b) =>{
-        return a.timestamp! -b.timestamp!
-      })
+    else if(this.inInstitution){
+      this.p_filtered = this.p_filtered.filter(s=> s.holder == "INSTITUTION")
     }
+    else if(this.isAtDoctor){
+      this.p_filtered = this.p_filtered.filter(s=> s.holder == "VET")
+    }
+    if(this.Returned){
+      this.p_filtered = this.p_filtered.filter(s=> s.status == "RETURNED")
+    }
+    else {
+      this.p_filtered = this.p_filtered.filter(s=> s.status != "RETURNED")
+    }
+    this.p_show = this.p_filtered
+    this.setPages()
+    this.ShowPage(this.pagenumber!)
+    this.cdr.detectChanges()
   }
-
-
   selectedDayFrom: Date | null = null;
   selectedTimeFrom: Date | null = null;
   selectedDayTo: Date | null = null;
@@ -143,5 +171,30 @@ export class FoundComponent {
     this.filter()
   }
 
+  //Paginator
 
+  numberofpages?: number;
+  numberofitems?: number;
+  pagelength?:number = 2 //how many posts in a page
+  pagenumber?:number = 0
+
+  setPages(){
+    this.numberofpages = Math.ceil(this.p_filtered.length/this.pagelength!)+1
+    this.numberofitems = this.p_filtered.length
+  }
+  handlePageEvent(e: PageEvent){
+    console.log(e)
+    this.pagelength = e.pageSize //how many posts
+    this.pagenumber = e.pageIndex //which  page i am now
+    this.ShowPage(this.pagenumber)
+  }
+
+  ShowPage(page:number){
+    this.p_show = []
+    for(let i=page*this.pagelength!;i<(page+1)*this.pagelength!;i++){
+      if(i>this.p_filtered.length-1) break
+      this.p_show.push(this.p_filtered[i])
+    }
+    this.cdr.detectChanges()
+  }
 }

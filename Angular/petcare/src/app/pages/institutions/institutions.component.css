@@ -7,7 +7,7 @@
 }
 
 .inst-button{
-  width:90%;
+  width:100%;
   height:70px;
   background-color: aliceblue;
   gap: 10px;
@@ -21,11 +21,45 @@
 
 .details-card{
   width: 55%;
-  height:60%;
+  height:550px;
 }
 
 .card-title{
   margin: 30px auto;
   text-align: center;
   padding: auto;
+}
+
+
+.container-s{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-position{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-details{
+  width:100%;
+  padding: 10px;
+}
+
+.details-text{
+  padding-left: 40px;
+  width: 40%;
+}
+
+app-map-output{
+  width:60%;
+}
+
+.new-institution-button{
+  position: absolute;
+  right: 22px;
+  top: 150px;
 }

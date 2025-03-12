@@ -36,6 +36,7 @@ public class MessageBoxService {
 
     public void MakeMessagesRead(Long touserid, Timestamp lastRead){
         User touser = userRepository.findById(touserid).orElse(null);
+        fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MessageBox messageBox = messageBoxRepository.findBySenderAndReceiver(fromuser,touser);
         if (messageBox == null) messageBox = new MessageBox();
         messageBox.setLastSeen(lastRead);
@@ -44,17 +45,18 @@ public class MessageBoxService {
 
     //for both users
     public void ChangeMessagesChangeTime(User other_user, Timestamp lastChanged){
-        MessageBox messageBox = messageBoxRepository.findBySenderAndReceiver(other_user,fromuser);
-        if (messageBox == null) messageBox = new MessageBox();
-        messageBox.setSender(other_user);
-        messageBox.setReceiver(fromuser);
-        messageBox.setLastSeen(lastChanged);
-        messageBox.setLastChange(lastChanged);
-        messageBoxRepository.save(messageBox);
-        messageBox = messageBoxRepository.findBySenderAndReceiver(fromuser,other_user);
+        fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MessageBox messageBox = messageBoxRepository.findBySenderAndReceiver(fromuser,other_user);
         if (messageBox == null) messageBox = new MessageBox();
         messageBox.setSender(fromuser);
         messageBox.setReceiver(other_user);
+        messageBox.setLastSeen(lastChanged);
+        messageBox.setLastChange(lastChanged);
+        messageBoxRepository.save(messageBox);
+        messageBox = messageBoxRepository.findBySenderAndReceiver(other_user,fromuser);
+        if (messageBox == null) messageBox = new MessageBox();
+        messageBox.setSender(other_user);
+        messageBox.setReceiver(fromuser);
         messageBox.setLastChange(lastChanged);
         messageBoxRepository.save(messageBox);
     }
@@ -80,6 +82,8 @@ public class MessageBoxService {
     public void DtoToMsgBox(MessageBoxDto messageBoxDto){
         fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User receiver = userRepository.findById(messageBoxDto.getReceiverId()).orElse(null);
+        MessageBox messageBoxCheck = messageBoxRepository.findBySenderAndReceiver(fromuser,receiver);
+        if (messageBoxCheck != null) return;//MsgBox already exists
         if(fromuser == receiver) return;//No msgBox to the same user
         MessageBox messageBox = new MessageBox();
         messageBox.setReceiver(receiver);
@@ -88,5 +92,9 @@ public class MessageBoxService {
         messageBox.setLastChange(s);
         messageBox.setLastSeen(s);
         messageBoxRepository.save(messageBox);
+    }
+
+    public void DeleteMsgBox(Long id){
+        messageBoxRepository.deleteById(id);
     }
 }

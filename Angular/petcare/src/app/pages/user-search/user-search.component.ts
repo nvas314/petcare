@@ -26,32 +26,22 @@ constructor(private serv:UserGeneralService,
   private cdr:ChangeDetectorRef,
   private activatedRoute:ActivatedRoute
 ){
-  serv.SearchUsersGeneral().subscribe((data) => {
-    this.allResults = data;
-  })
 }
 
   SearchUserParam(searchinput:string){
     this.searchRequest = true
     this.searchResults = []
     if(searchinput.trim() == null) return
-    let name, surname,middleName , search;
-    console.log(this.allResults)
-    this.allResults.forEach(e => {
-      if (e.name == null) name = ""
-      else name = e.name.toLocaleLowerCase()
-      if (e.surname == null) surname = ""
-      else surname = e.surname.toLocaleLowerCase()
-      if (e.middleName == null) middleName = ""
-      else middleName = e.middleName.toLocaleLowerCase()
-      search = searchinput.toLocaleLowerCase()
-
-      if(name.includes(search)||
-      surname.toLocaleLowerCase().includes(search)||
-      middleName.toLocaleLowerCase().includes(search)){
-        this.searchResults.push(e)
-      }
+    this.serv.SearchUsersGeneral(searchinput.toLocaleLowerCase()).subscribe((data) => {
+      console.log(data)
+      this.searchResults = data;
     })
     this.cdr.detectChanges()
+  }
+
+  getFullname(user:UserCommonView){
+    let fullname = user.name +" " + user.middleName +" " + user.surname
+    fullname = fullname.replace("  "," ") //No Middlename
+    return fullname
   }
 }

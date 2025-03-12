@@ -14,6 +14,8 @@ import { PostService } from '../services/post.service';
 import { MessageService } from '../services/message.service';
 import { Message } from '../models/message.model';
 import { MessageBox } from '../models/message-box.model';
+import { lastValueFrom } from 'rxjs';
+import { GiveReq } from '../models/give-req.model';
 
 @Component({
   selector: 'app-header',
@@ -24,13 +26,18 @@ import { MessageBox } from '../models/message-box.model';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  fullname = ""
-  username = ""
+  user: any;
+
   image = ""
   href = ""
 
   newmessages = ""
   notifications = ""
+
+  signedin?:boolean
+
+  givereqs?:GiveReq[] = []
+  notificationslist?:Notification[] = []
 
   constructor(private serv:AuthService,
     private acc:AccountService,
@@ -47,45 +54,39 @@ export class HeaderComponent {
   }
 
   ngOnInit(){
-    this.not_serv.getNotifications().subscribe((data:Notification[]) =>{
-      this.notifications = data.length.toString()
-      if(this.notifications == "0" ){this.notifications = ""}
-    })
-    this.mess_serv.showMessageBoxes().subscribe((data:MessageBox[]) => {
-      let count = 0;
-      data.forEach(mbox => {
-        if(mbox.lastSeen! < mbox.lastChange!){
-          count += 1;
-        }
-      });
-      if (count == 0) {this.newmessages = ""}
-      else {this.newmessages = count.toString()}
-    })
-    this.username == null
-    if(localStorage.getItem('username') != null){ //If logged in
-      this.fullname = localStorage.getItem('fullname')!
-      this.username = localStorage.getItem('username')!
-    }
-    if (localStorage.getItem('username') == null) return;
-    this.acc.getaccountImage(parseInt(localStorage.getItem('userid')!)).subscribe((data:string[]) => {
-      if(data == null){
-        this.image = "/assets/images/noimageprofile.JPG"
-      }
-      else{
-        this.image = 'data:image/jpeg;base64,' + data[0]
-      }
-      localStorage.setItem('accimage',this.image)
-      this.cdr.detectChanges();
-    })
+    this.serv.user$.subscribe((data) => {
+      this.user = data;
+    });
+
+    this.not_serv.notifications$.subscribe((data) => {
+      this.updateBadge();
+    });
+    this.not_serv.giveReqs$.subscribe((data) => {
+      this.updateBadge();
+    });
+
+    this.mess_serv.messages$.subscribe((count) => {
+      this.newmessages = count === 0 ? "" : count.toString();
+    });
+
+    this.not_serv.loadNotifications();
+    this.not_serv.loadGiveReqs();
+    this.mess_serv.loadUnreadMessages();
   }
 
-    Logout(){
-      if(localStorage.getItem('accessToken') != null){
-                this.serv.Disconect();
-        this.router.navigate(['/']);
-        this.cdr.detectChanges();
-      }
+
+  Logout(){
+    if(localStorage.getItem('accessToken') != null){
+              this.serv.Disconect();
+      this.router.navigate(['/']);
+      location.reload();
     }
+  }
 
 
+  updateBadge() {
+    const notifCount = this.not_serv.notificationsSubject.value;
+    const giveReqsCount = this.not_serv.giveReqsSubject.value;
+    this.notifications = notifCount + giveReqsCount === 0 ? "" : (notifCount + giveReqsCount).toString();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { InstitutionService } from '../../services/institution.service';
 import { Institution } from '../../models/institution.model';
 import { NgFor, NgIf } from '@angular/common';
@@ -21,8 +21,7 @@ import { Post } from '../../models/post.model';
 export class InstitutionsComponent {
 
   intitutions:Institution[] = []
-  emplayees:InstEmpl[] = []
-  emplayeesShow:InstEmpl[] = []
+  isroleAdmin = false
 
   institution_selected = -1;
   p:Post[] = []
@@ -32,36 +31,32 @@ export class InstitutionsComponent {
   }
 
   constructor(private serv:InstitutionService,
-    postserv:PostService
+    private postserv:PostService,
+    private cdr:ChangeDetectorRef
   ){
-    postserv.getOwnPosts().subscribe((data:Post[]) =>{
-      data.forEach(d=>{
-        if(d.type == "FOUND"){
-          this.p.push(d);
-        }
-      })
-    })
+    this.getPostFound();
     this.fetch();
+    if(localStorage.getItem('role') == "ADMIN"){
+      this.isroleAdmin == true
+    }
   }
 
   fetch(){
     this.intitutions = []
-    this.emplayees = []
     this.serv.getAllInsts().subscribe((data:Institution[]) =>{
       this.intitutions=data
-    })
-    this.serv.getAllInstApps().subscribe((data:InstEmpl[]) =>{
-      this.emplayees=data
+      this.cdr.detectChanges()
     })
   }
 
-  showEmpleyees(institurion_id:number){
-    this.emplayeesShow = []
-    this.emplayees.forEach(employee => {
-      if(employee.instId == institurion_id){
-        this.emplayeesShow.push(employee)
-      }
-    });
+  getPostFound(){
+    this.postserv.getOwnPosts().subscribe((data:Post[]) =>{
+      data.forEach(d=>{
+        if(d.type == "FOUND" && d.status != "RETURNED"){
+          this.p.push(d);
+        }
+      })
+    })
   }
 
   Delete(institution_id:number){

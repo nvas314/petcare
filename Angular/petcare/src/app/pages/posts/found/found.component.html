@@ -6,12 +6,22 @@
 
     <div class="sidenav-items">
 
-      <mat-form-field>
+      <mat-form-field class="sidenav-input-text">
         <mat-label>Search Post</mat-label>
         <input matInput [(ngModel)]="searchText" (ngModelChange)="onChange()">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="center">
+        <mat-label>Animal</mat-label>
+        <mat-select [(ngModel)]="searchAnimal" (ngModelChange)="onChange()" placeholder="Select">
+          <mat-option value="All">All</mat-option>
+          <div *ngFor="let a of animal_List">
+            <mat-option [value]="a">{{a}}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="sidenav-input-text">
         <mat-label>Sort By ...</mat-label>
         <mat-select [(ngModel)]="sortBy" (ngModelChange)="onChange()">
           <mat-option value="distance">Distance</mat-option>
@@ -19,36 +29,24 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox class="example-margin" [(ngModel)]="isEmergency" (click)="filter()">Emergency</mat-checkbox>
-      <mat-checkbox class="example-margin" [(ngModel)]="isAdopted" (click)="filter()">For Adoption</mat-checkbox>
-      <mat-checkbox class="example-margin" [(ngModel)]="inInstitution" (click)="filter()">In Institution</mat-checkbox>
-      <mat-checkbox class="example-margin" [(ngModel)]="isAtDoctor" (click)="filter()">Healing</mat-checkbox>
-      <mat-checkbox class="example-margin" [(ngModel)]="isReturned" (click)="filter()">Returned</mat-checkbox>
-    <form>
-        <mat-label><div style="text-align: center;margin: 10px;">Animal</div></mat-label>
-        <input type="text"
-               placeholder="Pick one"
-               aria-label="Number"
-               matInput
-               [matAutocomplete]="auto" [(ngModel)]="searchAnimal" (ngModelChange)="onChange()">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option">{{option}}</mat-option>
-          }
-        </mat-autocomplete>
-    </form>
+      <mat-checkbox class="example-margin" [(ngModel)]="Returned" (ngModelChange)="filter()">Returned</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="isEmergency" (ngModelChange)="filter()">Emergency</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="isAdopted" (ngModelChange)="filter()">For Adoption</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="inInstitution" (ngModelChange)="filter()">In Institution</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="isAtDoctor" (ngModelChange)="filter()">Healing</mat-checkbox>
+
     <div>
 
       <div style="text-align: center;margin: 10px;">
         From
       </div>
-    <mat-form-field class="center">
+    <mat-form-field>
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker1"  [(ngModel)]="selectedDayFrom" (dateChange)="onDateChange()">
+      <input matInput [matDatepicker]="picker1"  [(ngModel)]="selectedDayFrom" (ngModelChange)="onDateChange()">
       <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
-    <mat-form-field class="center">
+    <mat-form-field>
       <mat-label>Time</mat-label>
       <input matInput
         [matTimepicker]="timepicker" [(ngModel)]="selectedTimeFrom" (ngModelChange)="onDateChange()">
@@ -63,13 +61,13 @@
         To
       </div>
 
-      <mat-form-field class="center">
+      <mat-form-field>
         <mat-label>Date</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDayTo" (ngModelChange)="onDateChange()">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field class="center">
+      <mat-form-field>
         <mat-label>Time</mat-label>
         <input matInput
           [matTimepicker]="timepicker1" [(ngModel)]="selectedTimeTo" (ngModelChange)="onDateChange()">
@@ -90,20 +88,30 @@
       (click)="sidenav.toggle()">
         Toggle sidenav
       </button>
-      <a routerLink="/posts/new" style="margin-right:10px;float: right"><button mat-stroked-button style="background-color: aliceblue;">
-        Add post
-      </button></a>
+      <div *ngIf="!timedout && user_role != null">
+        <a routerLink="/posts/new" style="margin-right:10px;float: right"><button mat-stroked-button style="background-color: aliceblue;">
+          Add post
+        </button></a>
+      </div>
       </div>
 
 
-  <div *ngFor="let post of p_show" style="margin: 10px;">
-    <app-post-box [post]="post"></app-post-box>
+  <div *ngIf="p.length == 0" style="padding: 10px;">
+    <mat-card appearance="outlined" style="width: 100%;margin: 10px;background-color: antiquewhite;">
+      <mat-card-content>No Posts yet</mat-card-content>
+    </mat-card>
   </div>
-  <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
+  <div *ngFor="let post of p_show" style="margin: 40px;">
+    <app-post-box [post]="post" [isfoundcomponent]="true"></app-post-box>
+  </div>
+  <div *ngIf="p_filtered.length != 0">
+  <mat-paginator [length]="numberofitems"
+              [pageSize]="pagelength"
+              (page)="handlePageEvent($event)"
+              [pageSizeOptions]="[1,2,5, 10, 25]"
               aria-label="Select page">
-</mat-paginator>
+  </mat-paginator>
+  </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

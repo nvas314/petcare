@@ -26,15 +26,15 @@ export class InstitutionService {
   }
 
   getAllInstEmpls(){
-    return this.http.get<UserCommonView[]>(BACKEND_URL+this.PAGE_MAPPING+"/officials/all")
+    return this.http.get<UserCommonView[]>(BACKEND_URL+this.PAGE_MAPPING+"/user/officials/all")
   }
 
   getAllInstApps(){
-    return this.http.get<InstEmpl[]>(BACKEND_URL+this.PAGE_MAPPING+"/apps/all")
+    return this.http.get<InstEmpl[]>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/all")
   }
 
   applyUserInstEmpl(dto:InstOfficialTypeDto){
-    return this.http.put<InstEmpl>(BACKEND_URL+this.PAGE_MAPPING+"/apps/apply",dto)
+    return this.http.put<InstEmpl>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/apply",dto)
   }
 
   makeApplication(app:InstEmpl){
@@ -42,18 +42,18 @@ export class InstitutionService {
   }
 
   scheduleMeeting(appd:ApplicationDateDto){
-    return this.http.put<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/app/new/meeting",appd)
+    return this.http.put<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/approve/app/new/meeting",appd)
   }
 
-  editInst(chDesc:ChangeDescriptionDto){
-    return this.http.put<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/edit",chDesc)
+  editInstEmplDesc(chDesc:ChangeDescriptionDto){
+    return this.http.put<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/user/edit",chDesc)
   }
 
   delInst(p_id:number){
-    return this.http.delete<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/"+p_id)
+    return this.http.delete<Institution>(BACKEND_URL+this.PAGE_MAPPING+"/admin/"+p_id)
   }
 
   delInstEmpl(p_id:number){
-    return this.http.delete<InstEmpl>(BACKEND_URL+this.PAGE_MAPPING+"/apps/"+p_id)
+    return this.http.delete<InstEmpl>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/"+p_id)
   }
 }

@@ -1,5 +1,6 @@
 package com.project.petcare.service;
 
+import com.project.petcare.config.AppConstants;
 import com.project.petcare.request_dto.CommentDto;
 import com.project.petcare.model.Comment;
 import com.project.petcare.model.User;
@@ -28,22 +29,24 @@ public class CommentService {
     }
 
 
-    public Comment createComment(CommentDto commentDto,Long post_id){
+    public void createComment(CommentDto commentDto,Long post_id){
 
         User fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        if(fromuser.getStatus() == AppConstants.User.UserStatus.TIMEOUT) return;//Timedout users cannot make comments
         Comment comment = new Comment();
         comment.setComment(commentDto.getComment());
         comment.setPost(postRepository.findById(post_id).orElseThrow());
         comment.setUser(fromuser);
 
         if (comment.getUser() == null || comment.getPost() == null){
-            return null;
+            return;
         }
-        return comment;
+        commentRepository.save(comment);
     }
 
-    public List<ResCommentDto> CommentToResDto(List<Comment> comments){
+    public List<ResCommentDto> CommentToResDto(Long post_id){
+
+        List<Comment> comments = commentRepository.findByPostId(post_id);
         List<ResCommentDto> reslist = new ArrayList<ResCommentDto>();
         for(Comment comment : comments){
             ResCommentDto resCommentDto = new ResCommentDto();
@@ -59,5 +62,9 @@ public class CommentService {
             reslist.add(resCommentDto);
         }
         return reslist;
+    }
+
+    public void DeleteComment(Long comment_id){
+        commentRepository.deleteById(comment_id);
     }
 }

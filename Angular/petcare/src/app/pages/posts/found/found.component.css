@@ -3,6 +3,7 @@
   width: 90%;
   height:50%;
   margin: 0 auto;
+  min-height: 100%;
 }
 
 .sidenav-items{
@@ -21,6 +22,7 @@
 
 mat-sidenav-container{
   background-color:white;
+  min-height: 100%;
 }
 
 app-post-box{
@@ -47,4 +49,17 @@ mat-sidenav {
   display: flex;
   justify-content: flex-end;
   width:100%;
+}
+
+.sidenav-input-text{
+  width:80%;
+  margin: 10px auto;
+}
+
+.sidenav-input-label{
+  font-weight: 300;
+}
+
+.mat-mdc-form-field{
+  width:100%
 }

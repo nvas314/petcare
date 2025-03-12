@@ -1,0 +1,65 @@
+.container {
+  margin-top: 70px;
+  width: 90%;
+  height:50%;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+.sidenav-items{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.center{
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-sidenav-container{
+  background-color:white;
+  min-height: 100%;
+}
+
+app-post-box{
+  padding: 5px;
+  width:95%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+header {
+  height: 60px;
+}
+
+mat-sidenav {
+  height: 100%;
+}
+
+.buttons-up{
+  margin-top: 20px;
+  margin-bottom: -10px;
+  display: flex;
+  justify-content: flex-end;
+  width:100%;
+}
+
+.sidenav-input-text{
+  width:80%;
+  margin: 10px auto;
+}
+
+.sidenav-input-label{
+  font-weight: 300;
+}
+
+.mat-mdc-form-field{
+  width:100%
+}

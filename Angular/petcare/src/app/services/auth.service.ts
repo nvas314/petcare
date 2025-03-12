@@ -5,15 +5,20 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { Token } from '@angular/compiler';
 import { LoginToken } from '../models/logintoken.model';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) { }
+  private userSubject = new BehaviorSubject<any>(this.getUserFromStorage());
+  user$ = this.userSubject.asObservable();
 
-
+  constructor(private http:HttpClient,
+    private acc:AccountService
+  ) { }
 
   Authenticate(user:User){
     return this.http.post<LoginToken>(BACKEND_URL+"/auth/login",user)
@@ -39,12 +44,47 @@ export class AuthService {
     localStorage.removeItem('role')
   }
 
-  SetUserDetails(){
-    this.http.get<User>(BACKEND_URL+"/account/details").subscribe((data:User) => {
-      localStorage.setItem('username', data.username!);
-      localStorage.setItem('fullname', data.name+" "+data.middleName+" "+data.surname);
-      localStorage.setItem('userid', data.id!.toString());
-      localStorage.setItem('role', data.role!);
+  SetUserDetails(): Promise<void>{
+    return new Promise((resolve)=> {
+    this.http.get<User>(BACKEND_URL+"/account/user/details").subscribe((user_data:User) => {
+      this.acc.getaccountImage(user_data.id!).subscribe((image_data:string[]) => {
+        let image
+        if(image_data == null){
+          image = "/assets/images/noimageprofile.JPG"
+        }
+        else{
+          image = 'data:image/jpeg;base64,' + image_data[0]
+        }
+        localStorage.setItem('accimage',image)
+
+        localStorage.setItem('username', user_data.username!);
+        let fullname = user_data.name+" "+user_data.middleName+" "+user_data.surname;
+        if(user_data.middleName == null){
+          fullname = user_data.name+" "+user_data.surname;//No MiddleName
+        }
+        localStorage.setItem('fullname', fullname);
+        localStorage.setItem('userid', user_data.id!.toString());
+        localStorage.setItem('role', user_data.role!);
+
+        resolve();
+      })
     })
+    })
+  }
+
+  //For Observable
+
+  shareUserDetails(){
+    this.userSubject.next(this.getUserFromStorage());
+  }
+
+  getUserFromStorage() {
+    return {
+      username: localStorage.getItem('username'),
+      fullname: localStorage.getItem('fullname'),
+      userid: localStorage.getItem('userid'),
+      role: localStorage.getItem('role'),
+      accimage : localStorage.getItem('accimage'),
+    };
   }
 }

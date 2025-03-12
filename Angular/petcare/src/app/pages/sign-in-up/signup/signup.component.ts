@@ -38,6 +38,7 @@ export class SignupComponent {
 
     onSumbit(){
       const postUser = this.form.value as User
+      if(this.form.controls.password.value != this.form.controls.confirmpassword.value) return //Confirm password
       if(this.form?.valid){
         this.auth.NewUser(postUser).subscribe((data) => {
         if(this.imageFile != undefined){

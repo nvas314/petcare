@@ -41,8 +41,7 @@ public class NotificationService {
                         n.getId(),
                         n.getTimestamp(),
                         n.getTitle(),
-                        n.getMessage(),
-                        n.getPost().getId()
+                        n.getMessage()
                 )).collect(Collectors.toList());
     }
 
@@ -61,9 +60,9 @@ public class NotificationService {
     }
 
     public void MakeNewSendReq(GiveReqDto dto){
-        User from_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         GiveReq giveReq = new GiveReq();
         Post post = postRepository.findById(dto.getPostid()).orElseThrow();
+        if (post.getType() == AppConstants.Post.PostType.LOST) return; //Lost pets cannot be traded
         giveReq.setToholder(dto.getToholder());
         giveReq.setToanimalHolderId(dto.getToanimalHolderId());
         giveReq.setPost(post);
@@ -86,22 +85,6 @@ public class NotificationService {
         return ReqsToDto(giveReqs);
     }
 
-    public List<ResGiveReqDto> getReceivedGiveRequests(){
-        User to_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Profession prof = to_user.getProfession();
-        List<Institution> inst = to_user.getInstitutionEmployees()
-                .stream().map(InstOfficial::getInstitution).toList();
-        List<GiveReq> giveReqs = List.of();
-        giveReqRepository.findByToanimalHolderIdAndToholder(to_user.getId(), AppConstants.Post.AnimalHolder.COMMON).addAll(giveReqs);
-        if(prof != null){
-            giveReqRepository.findByToanimalHolderIdAndToholder(prof.getId(), AppConstants.Post.AnimalHolder.VET).addAll(giveReqs);
-        }
-        inst.forEach(institution -> {
-            giveReqRepository.findByToanimalHolderIdAndToholder(institution.getId(), AppConstants.Post.AnimalHolder.INSTITUTION).addAll(giveReqs);
-        });
-        return ReqsToDto(giveReqs);
-    }
-
     private List<ResGiveReqDto> ReqsToDto(List<GiveReq> reqs){
         return reqs.stream().map(r ->
                 new ResGiveReqDto(
@@ -110,14 +93,6 @@ public class NotificationService {
                         r.getToholder(),
                         r.getToanimalHolderId()
                 )).collect(Collectors.toList());
-    }
-
-    public void GivePetAccept(GiveReqDto dto){
-        User from_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
-    public void ReturnPetAccept(GiveReqDto dto){
-        User from_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public void DeletePetRequest(Long reqid){

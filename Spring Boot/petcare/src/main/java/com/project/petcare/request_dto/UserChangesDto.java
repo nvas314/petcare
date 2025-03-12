@@ -27,5 +27,7 @@ public class UserChangesDto {
     private String surname;
     private String middleName;
     private String description;
+    private String telephone;
+    private String email;
 
 }

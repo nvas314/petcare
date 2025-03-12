@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy,ChangeDetectorRef, Component, inject } from '@angular/core';
 import { UserGeneralService } from '../../services/user-general.service';
 import { UserCommonView } from '../../models/user-details.model';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -13,6 +13,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { AccountService } from '../../services/account.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-general-info',
@@ -53,13 +54,12 @@ export class UserGeneralInfoComponent {
 
       postserv.getOwnPosts().subscribe((data:Post[]) =>{
         data.forEach(d=>{
-          if(d.type == "FOUND"){
+          if(d.type == "FOUND" && d.status != "RETURNED"){
             this.p.push(d);
           }
         })
       })
   }
-
 
   sendMessage(){
         this.msgserv.addMessageBox(parseInt(this.user_id!)).subscribe((data) => {

@@ -4,7 +4,6 @@ import com.project.petcare.model.Comment;
 import com.project.petcare.model.Message;
 import com.project.petcare.model.MessageBox;
 import com.project.petcare.model.User;
-import com.project.petcare.projection.MessageBoxView;
 import com.project.petcare.repository.MessageBoxRepository;
 import com.project.petcare.repository.MessageRepository;
 import com.project.petcare.request_dto.MessageBoxDto;
@@ -21,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/boxmessages")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class MessageBoxController {
 
     MessageBoxRepository messageBoxRepository;
@@ -34,20 +33,20 @@ public class MessageBoxController {
     MessageBoxService messageboxService;
 
 
-    @GetMapping("/")
+    @GetMapping("/user/")
     public List<ResMessageBoxDto> getUserMessageBoxes(){
         return messageboxService.MsgBoxToDto();
     }
 
-    @PostMapping("/")
+    @PostMapping("/user/")
     public ResponseEntity<MessageBox> addMessageBox(@RequestBody MessageBoxDto messageBoxDto) {
         if(messageBoxDto.getReceiverId() == null) return null; //Missing values
         messageboxService.DtoToMsgBox(messageBoxDto);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public void deleteMessageBox(@PathVariable Long id){
-        messageBoxRepository.deleteById(id);
+        messageboxService.DeleteMsgBox(id);
     }
 }

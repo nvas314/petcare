@@ -21,7 +21,7 @@ export class UserGeneralService {
   }
 
 
-  SearchUsersGeneral(){
-    return this.http.get<UserCommonView[]>(BACKEND_URL+"/users/admin/all")
+  SearchUsersGeneral(name:string){
+    return this.http.get<UserCommonView[]>(BACKEND_URL+"/users/user/search/"+name)
   }
 }

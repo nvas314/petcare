@@ -5,7 +5,7 @@ import { Message } from '../../models/message.model';
 import { MessageService } from '../../services/message.service';
 import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NewMessage } from '../../reqDto/new-message.model';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
@@ -17,7 +17,7 @@ import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-messages',
-  imports: [NgFor,ReactiveFormsModule,FormsModule,DatePipe,NgClass,NgIf,
+  imports: [NgFor,ReactiveFormsModule,FormsModule,DatePipe,NgClass,NgIf,RouterModule,
       MatCard,MatCardContent,MatIcon,MatButtonModule,MatFormField, MatLabel, MatDatepicker, MatDatepickerModule, MatHint,MatFormField,MatInputModule,MatButton],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css'
@@ -27,13 +27,16 @@ export class MessagesComponent {
   msgBoxes ?: MessageBox[]
   messages ?: Message[]
   other_user ?:User
+  user_fullname ?: string
+  user_id ?: string
 
   constructor(private serv:MessageService,
     private acc:AccountService,
     private route:ActivatedRoute,
     private cdr:ChangeDetectorRef
   ){
-    //this.other_user_id = this.route.snapshot.paramMap.get('id')!;
+    this.user_fullname = localStorage.getItem('fullname')!
+    this.user_id = localStorage.getItem('userid')!
   }
 
   messageform = new FormGroup({
@@ -72,24 +75,29 @@ export class MessagesComponent {
 
   showMessages(user:User){
     this.other_user = user;
+    console.log(this.other_user)
     this.serv.showMessages(user.id?.toString()!).subscribe((data:Message[]) => {
       this.messages = data;
-      this.getImages();
-      this.cdr.detectChanges()
     this.showBoxes();
-    this.cdr.detectChanges()
     })
   }
 
   showBoxes(){
     this.serv.showMessageBoxes().subscribe((data:MessageBox[]) => {
       this.msgBoxes = data;
+      this.getImages();
       this.cdr.detectChanges()
     })
   }
 
   delBox(id:number){
     this.serv.delMessageBox(id).subscribe(()=>{this.showBoxes()})
+    const userExists = this.msgBoxes?.filter(msg => (msg.receiver == this.other_user))//Remove messages if selected user
+    if(userExists?.length == 0){
+      this.messages = []
+      this.other_user = undefined;
+      this.cdr.detectChanges()
+    }
   }
 
   isHigherThan(changed:number,seen:number){
@@ -102,5 +110,14 @@ export class MessagesComponent {
     else{
       return false
     }
+  }
+
+  getFullname(user:User){
+    // if(user.status = 'DELETED'){
+    //   return "[Deleted]"
+    // }
+    let fullname = user.name + " " + user.middleName + " " +user.surname
+    fullname = fullname.replace("  "," ")//No middlename
+    return fullname
   }
 }

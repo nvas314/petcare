@@ -6,5 +6,6 @@ export class Institution {
   description?:string
   longitude?:number
   latitude?:number
+  telephone?:string
   crew?:UserCommonView[]
 }

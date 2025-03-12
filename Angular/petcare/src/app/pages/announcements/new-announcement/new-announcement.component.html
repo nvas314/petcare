@@ -1,5 +1,6 @@
 <div class="container">
-  <h1 style="text-align: center;font-size:300%;">New Announcement</h1>
+<div style="background-color: blanchedalmond;min-height: 100%;padding: 10px;">
+<h1 style="text-align: center;font-size:300%;">New Announcement</h1>
 
 
 <form [formGroup]="ann_form" (ngSubmit)="MakeAnnouncement()">
@@ -12,7 +13,8 @@
 <div>
   <mat-form-field class="center" appearance="outline">
       <mat-label>Message</mat-label>
-      <textarea matInput formControlName="message"></textarea>
+      <textarea matInput  #message maxlength="500" formControlName="message"></textarea>
+      <mat-hint align="start"><strong>{{message.value.length}}/500</strong> </mat-hint>
   </mat-form-field>
 </div>
 <div>
@@ -26,7 +28,7 @@
 </div>
 <div>
   <mat-form-field class="center" appearance="outline">
-      <mat-label>Post</mat-label>
+      <mat-label>Post Id</mat-label>
       <input type="number" matInput formControlName="postId">
   </mat-form-field>
 </div>
@@ -35,5 +37,5 @@
 </div>
 </form>
 
-
+</div>
 </div>

@@ -12,4 +12,7 @@ export class UserCommonView {
   profession?:string;
   longitude?:number;
   latitude?:number;
+  status?:string;
+  role?:string;
+  description?:string;
 }

@@ -1,10 +1,10 @@
 
-<div class="paragraph" style="background-color: aqua;">
-<div style="text-align: center;"><h1>PetCare</h1></div>
-<div style="text-align: center;"><h1>A site for lost pets</h1></div>
+<div class="paragraph" style="background-color: aqua;display: block;">
+<div class="title">PetCare</div>
+<div class="subtitle">A site for lost pets</div>
 </div>
 <div class="paragraph" style="background-color: rgb(71, 151, 40);">
-<div class="text">
+<div class="text" style="left: 5%;">
   <mat-card appearance="outlined" class="block">
     <mat-card-content>
       <div class="title-block">Find Your lost pets</div>
@@ -12,30 +12,30 @@
         Here you can post your missing pets and alert other people of your situation. In this site everyone can help to find your lost pet.
       </p>
   </mat-card-content>
-  <a><button mat-button class="button-block" style="margin-top: 20px;">View lost pets</button></a>
+  <a routerLink="posts/lost"><button mat-button class="button-block" style="margin-top: 20px;">View lost pets</button></a>
   </mat-card>
-  <img style="" src="assets/images/searching.jpg" alt="image">
   </div>
+    <img style="" src="assets/images/searching.jpg" alt="image" style="right: 5%;">
 </div>
 
 <div class="paragraph" style="background-color: rgb(120, 34, 178);">
-<div class="text">
-<mat-card appearance="outlined" class="block">
-  <mat-card-content>
-    <div class="title-block">Become a Member</div>
-    <p class="paragraph-block">
-      Help other people with you professional skills by becoming a member and helping pet needing healing and care.
-    </p>
-</mat-card-content>
-<a><button mat-button class="button-block" style="margin-top: 20px;">Make an Application Now!</button></a>
-</mat-card>
-<img style="" src="assets/images/vets.jpg" alt="image">
-</div>
+  <div class="text" style="right: 10%;">
+    <mat-card appearance="outlined" class="block">
+        <mat-card-content>
+          <div class="title-block">Become a Member</div>
+          <p class="paragraph-block">
+            Help other people with you professional skills by becoming a member and helping pet needing healing and care.
+          </p>
+      </mat-card-content>
+      <a routerLink="new/application"><button mat-button class="button-block" style="margin-top: 20px;">Make an Application Now!</button></a>
+    </mat-card>
+  </div>
+    <img src="assets/images/vets.jpg" alt="image" style="left: 5%;">
 </div>
 
 
 <div class="paragraph" style="background-color: firebrick;">
-  <div class="text">
+  <div class="text" style="left: 5%;">
     <mat-card appearance="outlined" class="block">
       <mat-card-content>
         <div class="title-block">See New Changes</div>
@@ -43,10 +43,10 @@
           See whatever new comes to our srevices and never be outdated.
         </p>
     </mat-card-content>
-    <a><button mat-button class="button-block" style="margin-top: 20px;">View Anouncements</button></a>
+    <a routerLink="announcements"><button mat-button class="button-block" style="margin-top: 20px;">View Anouncements</button></a>
     </mat-card>
     </div>
-    <img style="" src="assets/images/announcements.jpg" alt="image">
+    <img src="assets/images/announcements.jpg" alt="image" style="right: 5%;">
 </div>
 
 <app-footer></app-footer>

@@ -2,8 +2,6 @@ package com.project.petcare.repository;
 
 import com.project.petcare.config.AppConstants;
 import com.project.petcare.model.Post;
-import com.project.petcare.model.User;
-import com.project.petcare.projection.PostRes;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

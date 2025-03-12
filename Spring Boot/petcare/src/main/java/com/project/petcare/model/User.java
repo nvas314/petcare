@@ -2,16 +2,22 @@ package com.project.petcare.model;
 
 import com.project.petcare.config.AppConstants.User.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -21,15 +27,34 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
+
+
     @Column(nullable = false,unique = true)
+    @Size(min = 1, max = 30)
+    @NotBlank
     private String username;
+
     @Column(nullable = false)
     private String password;
+
+    @Size(min = 1, max = 30)
+    @NotNull
+    @NotBlank
     private String name;
+
+    @Size(min = 1, max = 30)
+    @NotNull
+    @NotBlank
     private String surname;
+
     private String middleName;
     private String telephone;
+
+    @NotNull
+    @NotBlank
+    //@Email
     private String email;
+
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -75,13 +100,36 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "user",cascade = CascadeType.ALL)
     List<Notification> notifications;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        switch (this.role){
+            case COMMON -> {
+                return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+            }
+            case MANAGER -> {
+                return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"),
+                        new SimpleGrantedAuthority("ROLE_USER"));
+            }
+            case APPROVER -> {
+                return List.of(new SimpleGrantedAuthority("ROLE_APPROVER"),
+                        new SimpleGrantedAuthority("ROLE_MANAGER"),
+                        new SimpleGrantedAuthority("ROLE_USER"));
+            }
+            case ADMIN -> {
+                return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+                        new SimpleGrantedAuthority("ROLE_APPROVER"),
+                        new SimpleGrantedAuthority("ROLE_MANAGER"),
+                        new SimpleGrantedAuthority("ROLE_USER"));
+            }
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public String getEmail(){
-        if(this.showEmail){
+
+    public String getEmail(Long user_id){
+        if(this.showEmail || Objects.equals(user_id, this.id)){
             return email;
         }
         else {
@@ -89,8 +137,8 @@ public class User implements UserDetails {
         }
     }
 
-    public String getTelephone(){
-        if(this.showTelephone){
+    public String getTelephone(Long user_id){
+        if(this.showTelephone || Objects.equals(user_id, this.id)){
             return telephone;
         }
         else {

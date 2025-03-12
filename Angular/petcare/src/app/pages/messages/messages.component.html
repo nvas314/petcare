@@ -1,18 +1,14 @@
-
-
-
-
-
-
 <div class="card-container">
 <mat-card class="card-items card-box-messages">
   <div style="text-align: center;color:aliceblue;font-size: 250%;margin: 10px;">Contacts</div>
-  <div *ngFor="let msgbox of msgBoxes">
-  <mat-card>
+  <div *ngFor="let msgbox of msgBoxes" style="margin: 10px;">
+  <mat-card [ngClass]="{'unread-message': isHigherThan(msgbox.lastChange!,msgbox.lastSeen!)}">
     <mat-card-content>
-      <div style="display: flex;justify-content: space-between;">
-        <img style="width:70px;height:70px;border-radius: 5px;" [src]="acccountImages.get(msgbox.receiver?.id!)" alt="image">
-        <div class="center-text">{{msgbox?.receiver?.name}} {{msgbox?.receiver?.middleName}} {{msgbox?.receiver?.surname}}
+      <div style="display: flex;justify-content: space-between;align-items: center;">
+        <img style="width:70px;height:70px;border-radius: 5px; " [src]="acccountImages.get(msgbox.receiver?.id!)" alt="image">
+        <div class="center-text"><a [routerLink]="'/user/'+msgbox.receiver?.id" style="font-size: large;">
+          {{getFullname(msgbox.receiver!)}}
+        </a>
           Last Message:{{msgbox.lastChange | date:'HH:mm,d/M/YY'}}
         </div><div *ngIf="isHigherThan(msgbox.lastChange!,msgbox.lastSeen!)"> Unread
 
@@ -29,37 +25,62 @@
 
 <mat-card class="card-items card-messages">
   <div style="text-align: center;color:aliceblue;font-size: 250%;margin: 10px;">{{other_user?.name}} {{other_user?.middleName}} {{other_user?.surname}} </div>
-<div class="text-add-message">
+<div class="text-add-message" style="display: flex;flex-direction: column;">
 
-  <div *ngFor="let message of messages">
-
+  <div *ngFor="let message of messages" style="padding: 10px;">
     <mat-card appearance="outlined" [ngClass]="{'my-message': message.senderId != other_user?.id, 'other-message' : message.senderId == other_user?.id }">
-      <mat-card-content>
-        {{message?.senderId}} : {{message?.message}} | {{message?.timestamp | date:'H:mm:ss | d/M/y'}}
-        <img style="width:70px;height:70px;border-radius: 15px;" [src]="acccountImages.get(message.senderId)" alt="image">
+      <mat-card-content style="padding-top: 30px;">
+        <div *ngIf="message.senderId == other_user?.id">
+          <div style="padding: 10px; word-wrap: break-word;">
+            {{getFullname(other_user!)}} : {{message.message}}
+          </div>
+
+          <div style="position: absolute; top: 10px;right: 10px;">
+           {{message?.timestamp | date:'H:mm:ss,d/M/y'}}
+          </div>
+
+          <div style="position: absolute; top: 10px;right: 10px;position: absolute; bottom: -100px;left: 10px;">
+            <img style="width:20px;height:20px;border-radius: 15px;" [src]="acccountImages.get(message.senderId)" alt="image">
+          </div>
+        </div>
+
+        <div *ngIf="message.senderId != other_user?.id" style="padding: 10px; word-wrap: break-word;">
+
+          {{user_fullname}} : {{message.message}}
+
+          <div style="position: absolute; top: 10px;right: 10px;">
+          {{message?.timestamp | date:'H:mm:ss,d/M/y'}}
+          </div>
+
+          <div style="position: absolute; top: 10px;right: 10px;position: absolute; bottom: -100px;left: 10px;">
+            <img style="width:20px;height:20px;border-radius: 15px;" [src]="acccountImages.get(message.senderId)" alt="image">
+          </div>
+        </div>
+
       </mat-card-content>
     </mat-card>
-
   </div>
 
+  <div *ngIf="other_user != undefined">
   <mat-card>
     <mat-card-content>
 
 
 
-<div style="display: flex;justify-content: space-between;">
-  <div class="center-text">
-  <form [formGroup]="messageform" (ngSubmit)="SumbitMessage(messageform.value.newmessage)">
-    <mat-form-field class="center" appearance="outline">
-      <mat-label>Message</mat-label>
-      <textarea matInput formControlName="newmessage"></textarea>
-    </mat-form-field>
-    <button mat-stroked-button type="sumbit">Send</button>
-  </form></div>
-</div>
+    <div style="display: flex;justify-content: space-between;">
+      <div class="message-form">
+      <form [formGroup]="messageform" (ngSubmit)="SumbitMessage(messageform.value.newmessage)">
+        <mat-form-field class="center" appearance="outline" style="width: 400px;">
+          <mat-label>Message</mat-label>
+          <input matInput formControlName="newmessage">
+        </mat-form-field>
+        <button mat-stroked-button type="sumbit" style="margin: 10px;">Send</button>
+      </form></div>
+    </div>
 
-</mat-card-content>
+  </mat-card-content>
 </mat-card>
+</div>
 </div>
 </mat-card>
 </div>

@@ -16,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +30,15 @@ public class ProfessionAndAppService {
     ProfAppRepository profAppRepository;
     UserRepository userRepository;
     UserService userService;
+    NotificationService notificationService;
     User userLoggedIn;
 
-    public ProfessionAndAppService(ProfRepository profRepository, ProfAppRepository profAppRepository, UserRepository userRepository, UserService userService) {
+    public ProfessionAndAppService(ProfRepository profRepository, ProfAppRepository profAppRepository, UserRepository userRepository, UserService userService, NotificationService notificationService) {
         this.profRepository = profRepository;
         this.profAppRepository = profAppRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     public void MakeApplicationRequest(ProfAppDto dto){
@@ -53,6 +58,10 @@ public class ProfessionAndAppService {
     public void SetApplicationMeeting(ApplicationDateDto dto){
         ProfApplication application = profAppRepository.findById(dto.getId()).orElseThrow();
         application.setDatetime(dto.getDatetime());
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date  = new Date(dto.getDatetime().getTime());
+        String dateString = df.format(date);
+        notificationService.MakeNotificationForUser(application.getUser(),null, "New Meeting for Profession Application","A new meeting has been organized at " + dateString);
         profAppRepository.save(application);
     }
 
@@ -69,14 +78,14 @@ public class ProfessionAndAppService {
             profession.setLatitude(application.getLatitude());
         }
         else{
-            profession.setProfession(profession.getProfession()+","+application.getProfession());//if not , new application adds up to current one
+            profession.setProfession(application.getProfession());
             profession.setLatitude(application.getLatitude());//If he moved places
             profession.setLongitude(application.getLongitude());
             profession.setDescription(application.getDescription());
         }
         profRepository.save(profession);
-        //profAppRepository.delete(application);
-        DeleteApplication(application.getId());
+        profAppRepository.delete(application);
+//        DeleteApplication(application.getId());
     }
 
     public void ChangeDescription(String description){
@@ -113,7 +122,7 @@ public class ProfessionAndAppService {
                         p.getProfession().getProfession(),
                         p.getProfession().getId(),
                         p.getProfession().getLongitude(),
-                        p.getProfession().getLongitude()
+                        p.getProfession().getLatitude()
                 )
                 ).collect(Collectors.toList());
     }

@@ -13,45 +13,29 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class CommentsController {
 
-
-    private final CommentRepository commentRepository;
     private final CommentService commentService;
 
     @Autowired
-    public CommentsController(CommentRepository cr, CommentService commentService){
-        this.commentRepository = cr;
+    public CommentsController(CommentService commentService){
         this.commentService = commentService;
     }
 
     @GetMapping("/{post_id}")
     public List<ResCommentDto> getAllComments(@PathVariable Long post_id){
-        List<Comment> comments = commentRepository.findByPostId(post_id);
-        return commentService.CommentToResDto(comments);
+        return commentService.CommentToResDto(post_id);
     }
 
-    @PostMapping("/{post_id}")
+    @PostMapping("/user/{post_id}")
     public ResponseEntity<Object> addComment(@RequestBody CommentDto commentDto, @PathVariable Long post_id) {
-        if(commentDto.getComment() == null) return null; //Missing values
-        Comment comment = commentService.createComment(commentDto,post_id);
-        commentRepository.save(comment);
+        commentService.createComment(commentDto,post_id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public Comment updateComment(@PathVariable Long id, @RequestBody Comment updatedcomment){
-        if(updatedcomment.getComment() == null ||updatedcomment.getUser() == null ) return null; //Missing values
-        if(commentRepository.existsById(id)){
-            updatedcomment.setId(id);
-            return commentRepository.save(updatedcomment);
-        }
-        return null;
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id){
-        commentRepository.deleteById(id);
+    @DeleteMapping("/manage/{comment_id}")
+    public void deleteComment(@PathVariable Long comment_id){
+        commentService.DeleteComment(comment_id);
     }
 }

@@ -21,30 +21,30 @@ export class ProfessionService {
   }
 
   getAllProfApps(){
-    return this.http.get<ProfApp[]>(BACKEND_URL+this.PAGE_MAPPING+"/apps/all")
+    return this.http.get<ProfApp[]>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/all")
   }
 
   applyUserProfApp(user_id:number){
-    return this.http.get<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/apps/apply/"+user_id)
+    return this.http.get<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/apply/"+user_id)
   }
 
   makeApplication(app:ProfApp){
-    return this.http.post<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/app/new",app)
+    return this.http.post<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/user/app/new",app)
   }
 
   scheduleMeeting(appd:ApplicationDateDto){
-    return this.http.put<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/app/new/meeting",appd)
+    return this.http.put<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/approve/app/new/meeting",appd)
   }
 
   editProf(chDesc:ChangeDescriptionDto){
-    return this.http.put<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/edit",chDesc)
+    return this.http.put<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/user/edit",chDesc)
   }
 
   delProf(p_id:number){
-    return this.http.delete<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/"+p_id)
+    return this.http.delete<Profession>(BACKEND_URL+this.PAGE_MAPPING+"/user/"+p_id)
   }
 
   delProfApp(p_id:number){
-    return this.http.delete<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/apps/"+p_id)
+    return this.http.delete<ProfApp>(BACKEND_URL+this.PAGE_MAPPING+"/approve/apps/"+p_id)
   }
 }

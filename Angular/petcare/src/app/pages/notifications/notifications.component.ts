@@ -23,6 +23,8 @@ export class NotificationsComponent {
   notif:UserNotification[] = []
   reqs:GiveReq[] = []
   p:Post[] = []
+  reqTitles = new Map();
+
   constructor(private serv:NotificationService,
     private post_serv:PostService,
     private cdr:ChangeDetectorRef
@@ -36,13 +38,20 @@ export class NotificationsComponent {
       this.notif = data
     })
 
+    this.post_serv.getFoundPosts().subscribe((data:Post[]) => {
+      this.p = data
+    })
     this.serv.getGiveReqs().subscribe((data:GiveReq[]) =>{
       this.reqs = data
+      data.forEach(element => {
+        this.reqTitles.set(element.postid,this.ShowReqTitle(element.postid!))
+      });
+      this.cdr.detectChanges();
     })
+
   }
 
   DeleteNotif(id:number){
-    console.log(123)
     this.serv.delNotification(id).subscribe((data)=>{
       this.fetch()
     })
@@ -51,6 +60,7 @@ export class NotificationsComponent {
   TakePetReq(post_id:number,type:string,id:string,req_id:number){
     console.log(post_id + type + id)
     this.serv.TakePetfromReq(post_id,type.toLocaleLowerCase(),id).subscribe(() => {
+      this.DelPetReq(req_id);
       this.fetch();
     })
   }
@@ -61,21 +71,22 @@ export class NotificationsComponent {
     })
   }
 
-  ShowReqTitle(form_id:number){
+  ShowReqTitle(form_id: number){
     let title = ""
     let postFrom = ""
     this.post_serv.getPost(form_id.toString()).subscribe((data:Post) => {
-      if(data.holder = 'COMMON'){
+      if(data.holder == 'COMMON'){
         postFrom = "user " + data.name + " " + data.middleName + " " + data.surname
       }
-      else if(data.holder = 'VET'){
-        postFrom = "vet "
+      else if(data.holder == 'VET'){
+        postFrom = data.name + " " + data.middleName + " " + data.surname + "," + data.profession
       }
-      else if(data.holder = 'INSTITUTION'){
+      else if(data.holder == 'INSTITUTION'){
         postFrom = "institution named " + data.instName
       }
-      return "A " + postFrom + "wants to give you a pet"
+      postFrom = postFrom.replace("  "," ")
+      return "A " + postFrom + " wants to give you a pet"
     })
-
   }
+
 }

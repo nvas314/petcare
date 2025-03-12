@@ -1,9 +1,16 @@
 <div class="container">
+  <div style="background-color: blanchedalmond;min-height: 100%;padding: 10px;">
   <h1 style="text-align: center;font-size:300%;">{{anmnt?.title}}</h1>
-  <p>{{anmnt?.message}}</p>
-<div *ngIf="anmnt?.postId != null">
-  [<a [routerLink]="'/comments/'+anmnt?.postId">Post</a>]
-</div>
-   {{anmnt?.date | date:'long'}}
 
+  <div style="background-color: beige;margin: 40px;padding: 30px;padding-top:20px;">
+    <p style="font-size: large;margin-bottom: 30px;margin-left: 5px;">{{anmnt?.message}}</p>
+ <hr>
+  <div style="margin-left: 30px;">
+    <div *ngIf="anmnt?.postId != null">
+      [<a [routerLink]="'/comments/'+anmnt?.postId">Post Source</a>]
+    </div>
+   {{anmnt?.date | date:'long'}}
+  </div>
+  </div>
+  </div>
 </div>

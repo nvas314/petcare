@@ -1,8 +1,9 @@
 <div class="container">
+  <a href="/user/search"><button mat-stroked-button class="search-button">Search User</button></a>
 <mat-card class="card-box">
     <mat-card-header>
         <mat-card-title>Account Details</mat-card-title>
-        <mat-card-subtitle>For {{account.name}} {{account.middleName}} {{account.surname}}</mat-card-subtitle>
+        <mat-card-subtitle>For {{fullname}}</mat-card-subtitle>
     </mat-card-header>
     <img [src]="image">
     <mat-card-content>
@@ -12,13 +13,18 @@
       <p><strong>Middle name:</strong> {{account.middleName}}</p>
       <p><strong>Surname:</strong> {{account.surname}}</p>
       <p><strong>Email:</strong> {{account.email}}</p>
-      <p><strong>Created At:</strong> {{account.createdAt}}</p>
+      <p><strong>Telephone:</strong> {{account.telephone}}</p>
+      <p><strong>Created At:</strong> {{account.createdAt | date:'long'}}</p>
+      <p><strong>Description:</strong> {{account.description}}</p>
       <a routerLink="/account/edit"><button mat-stroked-button>Change Details</button></a>
+      <div *ngIf="userdetails.profId == null && userdetails.institution?.length == 0">
+      <hr class="solid">
+        You have no employment record on this site
+      </div>
       <div *ngIf="userdetails.profId != null">
-        <hr class="solid">
       <p><strong>Profession:</strong> {{userdetails.profession}}</p>
       </div>
-      <div *ngIf="userdetails.instId!.length >0">
+      <div *ngIf="userdetails.instId! != null">
         <hr class="solid">
         <div *ngFor="let i of userdetails.institution">
           <p><strong>In Institution:</strong> {{i}} </p>

@@ -50,6 +50,7 @@ public class MessageService {
     public void SaveToDto(MessageDto messageDto,Long other_user_id){
         fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User receiver = userRepository.findById(other_user_id).orElseThrow();
+        if(fromuser == receiver) return;//No message to the same user
         Message message = new Message();
         message.setReceiver(receiver);
         message.setSender(fromuser);

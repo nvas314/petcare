@@ -39,7 +39,12 @@ export class OwnPostsComponent {
       this.p=[];
       if(this.actroute.snapshot.queryParams['type']){
         data.forEach(d=>{
-          if(d.type == "FOUND"){
+          if(this.id != undefined){ //Making Give Request
+            if(d.type == "FOUND" && d.status != "RETURNED"){ //Lost posts cannot be traded
+              this.p.push(d)
+            }
+          }
+          else {
             this.p.push(d)
           }
         })
@@ -62,6 +67,9 @@ export class OwnPostsComponent {
   }
 
   setPostStatus(postId:number,status:string){
-    this.serv.setOwnPostStatus(postId,status)
+    this.serv.setOwnPostStatus(postId,status).subscribe((data) => {
+      this.getPosts()
+    })
   }
+
 }

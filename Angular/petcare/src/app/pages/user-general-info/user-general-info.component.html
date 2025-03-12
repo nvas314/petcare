@@ -1,5 +1,4 @@
-<h1>User Details:</h1>
-
+<a href="/user/search"><button mat-stroked-button class="search-button">Search User</button></a>
 <div *ngIf="user_id != null">
 <div class="container">
   <mat-card class="card-box">
@@ -13,18 +12,20 @@
         <p><strong>Name:</strong> {{userDetails?.name}}</p>
         <p><strong>Middle name:</strong> {{userDetails?.middleName}}</p>
         <p><strong>Surname:</strong> {{userDetails?.surname}}</p>
-        <button mat-stroked-button (click)="sendMessage()">Send a Message</button>
-        <hr class="solid">
+        <div *ngIf="userDetails?.email != null"><p><strong>Email:</strong> {{userDetails?.surname}}</p></div>
+        <div *ngIf="userDetails?.telephone != null"><p><strong>Telephone:</strong> {{userDetails?.telephone}}</p></div>
+        <button mat-stroked-button (click)="sendMessage()" class="button">Send a Message</button>
         <div *ngIf="userDetails?.profId != null">
+        <hr class="solid">
           <p><strong>Profession:</strong> {{userDetails?.profession}}</p>
         </div>
+        <div *ngIf="userDetails?.instId?.length != 0">
         <hr class="solid">
-        <div *ngIf="userDetails?.instId != null">
           <div *ngFor="let inst of userDetails?.institution">
           <p><strong>Institution:</strong> {{inst}}</p>
           </div>
         </div>
-        <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'common', id: userDetails?.id}" ><button mat-button class="inst-button">Give Pet</button></a>
+        <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'common', id: userDetails?.id}" ><button mat-stroked-button class="give-button">Give Pet</button></a>
       </mat-card-content>
 
       <mat-card-footer>

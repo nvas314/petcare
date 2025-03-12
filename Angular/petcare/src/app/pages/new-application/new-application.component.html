@@ -30,19 +30,18 @@
     <mat-tab label="For Institution">
       <form [formGroup]="application_form_inst" (ngSubmit)="CreateInstApplication()">
 
-        <mat-form-field class="center" appearance="outline">
-          <mat-label>Intutution</mat-label>
-          <input matInput formControlName="instId">
+        <mat-form-field class="sidenav-input-text center" appearance="outline">
+          <mat-label>Institution</mat-label>
+          <mat-select formControlName="instId">
+            <div *ngFor="let i of institutions">
+              <mat-option [value]="i.id">{{i.name}}</mat-option>
+            </div>
+          </mat-select>
         </mat-form-field>
         <mat-form-field class="center" appearance="outline">
           <mat-label>Description</mat-label>
           <input matInput formControlName="description">
         </mat-form-field>
-        <mat-form-field class="center" appearance="outline">
-          <mat-label>Type</mat-label>
-          <input matInput formControlName="type">
-        </mat-form-field>
-
       <div class="center">
         <button mat-stroked-button type="submit">Send Application Request</button>
       </div>

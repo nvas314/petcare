@@ -11,16 +11,11 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"sender","reciever"}))
 public class MessageBox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    //@Column(unique = true)
-    //private Long user_id;
-    //@Column(unique = true)
-    //private Long other_user_id;
 
     private Timestamp lastChange;
     private Timestamp lastSeen;

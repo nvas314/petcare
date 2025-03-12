@@ -1,21 +1,35 @@
-<p>user-search works!</p>
+<div class="container-s">
+<div style="background-color: rgb(126, 126, 52);size: 100%;padding: 10px;margin-top: 10px;min-height: 100%;">
+<h1 style="text-align: center;margin: 30px;font-size: 300%;">Search</h1>
 
+<mat-card appearance="outlined"  style="background-color: rgb(226, 215, 178);">
+  <mat-card-content>
+    <div class="search">
+    <mat-form-field class="center" appearance="outline" style="width: 400px;">
+      <mat-label>Name,Surname or Middlename</mat-label>
+      <input matInput #searchInput>
+    </mat-form-field>
+    <button mat-stroked-button (click)="SearchUserParam(searchInput.value)" style="margin: 10px;">Search</button>
+  </div>
+  </mat-card-content>
+</mat-card>
 
-<mat-label>Title</mat-label>
-<input type="text" matInput #searchInput>
-<button mat-stroked-button (click)="SearchUserParam(searchInput.value)">Search</button>
 
 <div *ngFor="let user of searchResults">
 
-  <mat-card appearance="outlined">
+<div class="search-result">
+  <mat-card appearance="outlined" style="background-color: aquamarine;">
     <mat-card-content>
-      <a [routerLink]="'/user/'+user.id"> {{user.name}} {{user.middleName}} {{user.surname}}</a>
+      <a [routerLink]="'/user/'+user.id"> {{getFullname(user)}} </a>
     </mat-card-content>
   </mat-card>
+</div>
 
 </div>
-<div *ngIf="searchResults.length == 0 && searchRequest != null">
+<div *ngIf="searchResults.length == 0 && searchRequest == true">
 <div>
-  No Results
+  <h2 style="text-align: center;margin: 3%;">No Results</h2>
+</div>
+</div>
 </div>
 </div>

@@ -6,7 +6,7 @@
 </div>
 <div class="block" style="width: 30%;">
   <strong>Lat</strong>{{post.latitude}} <strong>Lon:</strong>{{post.longitude}}
-<p><strong>Description:</strong>{{post.description}}</p>
+  <div *ngIf="post.description != null"><p><strong>Description:</strong>{{post.description}}</p></div>
 </div>
 <div class="angle">
 <a routerLink="/comments/{{post.id}}">Show comments</a>

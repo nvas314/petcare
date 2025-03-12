@@ -4,7 +4,7 @@
   margin-left: auto;
 
   height: 100%;
-  background: rgb(0, 102, 255);
+  background: rgb(150, 129, 60);
   display: flex;
 }
 
@@ -17,11 +17,13 @@
 }
 
 .card-box-messages{
-  background-color: cadetblue;
+  background-color: rgb(35, 193, 199);
+  position: relative;
 }
 
 .card-messages{
-  background-color: gray;
+  background-color: rgba(168, 221, 82, 0.76);
+  position: relative;
 }
 
 .center-text {
@@ -35,6 +37,7 @@
   position: absolute;
   bottom: 10px;
   width: 100%;
+  /* overflow: scroll; */
 }
 
 .text-messages{
@@ -45,12 +48,22 @@
 
 .my-message{
   width: 50%;
-  right: 10px;
+  left: 50%;
   background-color: aquamarine;
 }
 
 .other-message{
   width: 50%;
-  left: 10px;
   background-color: bisque;
+}
+
+.message-form{
+  position: relative;
+  top:50%;
+  left:20%;
+  padding-top: 10px;
+}
+
+.unread-message{
+  background-color:chartreuse;
 }

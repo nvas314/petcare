@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profs")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class ProfessionController {
 
     private final ProfessionAndAppService professionAndAppService;
@@ -27,27 +27,27 @@ public class ProfessionController {
         return  professionAndAppService.ProfessionsDtos();
     }
 
-    @GetMapping("/apps/all")
+    @GetMapping("/approve/apps/all")
     public List<ResProfAppDto> getAllProfApps(){
         return professionAndAppService.ApplicationsDtos();
     }
 
-    @GetMapping("/apps/apply/{id}")
+    @GetMapping("/approve/apps/apply/{id}")
     public void ApplyUserApplication(@PathVariable Long id){
         professionAndAppService.ApplyApplication(id);
     }
 
-    @PostMapping("/app/new")
+    @PostMapping("/user/app/new")
     public void NewApplication(@RequestBody ProfAppDto dto){
         professionAndAppService.MakeApplicationRequest(dto);
     }
 
-    @PutMapping("/app/new/meeting")
+    @PutMapping("/approve/app/new/meeting")
     public void NewMeeting(@RequestBody ApplicationDateDto dto){
         professionAndAppService.SetApplicationMeeting(dto);
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/user/edit")
     public void ChangeProfessionDescription(@RequestBody ChangeDescriptionDto dto){
         professionAndAppService.ChangeDescription(dto.getDescription());
     }
@@ -57,7 +57,7 @@ public class ProfessionController {
         professionAndAppService.DeleteProf(p_id);
     }
 
-    @DeleteMapping("/apps/{p_id}")
+    @DeleteMapping("/approve/apps/{p_id}")
     public void DeleteProfApplication(@PathVariable Long p_id){
         professionAndAppService.DeleteApplication(p_id);
     }

@@ -35,6 +35,12 @@ public class SecurityConfiguration {
                 .cors().and()//
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/*/manage/**").hasRole("MANAGER")
+                .requestMatchers("/*/approve/**").hasRole("APPROVER")
+                .requestMatchers("/*/admin/**").hasRole("ADMIN")
+                .requestMatchers("/*/user/**").hasRole("USER")
+                .requestMatchers("/**")
+                    .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -51,10 +57,8 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        //configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:4200"));
         configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
-        //configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -4,6 +4,7 @@
   margin: 10px auto 0;
   perspective: 700px;
   margin: 10px;
+  width:50%;
 }
 
 .inst-button{
@@ -20,8 +21,8 @@
 }
 
 .details-card{
-  width: 55%;
-  height:60%;
+  display: flex;
+  min-height: 550px;
 }
 
 .card-title{
@@ -30,5 +31,29 @@
   padding: auto;
 }
 
+.container-s{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.flex-position{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
 
+.content-details{
+  width:100%;
+  padding: 10px;
+}
+
+.details-text{
+  padding-left: 40px;
+  width: 40%;
+}
+
+app-map-output{
+  width:60%;
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Profession } from '../../models/profession.model';
 import { ProfessionService } from '../../services/profession.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -14,6 +14,7 @@ import { UserCommonView } from '../../models/user-details.model';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { RouterModule } from '@angular/router';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-professions',
@@ -24,16 +25,20 @@ import { RouterModule } from '@angular/router';
 })
 export class ProfessionsComponent {
 
+  acccountImages = new Map()
+
   professionals:UserCommonView[] = []
   inst_employees:UserCommonView[] = []
   p:Post[] = []
   constructor(private profServ:ProfessionService,
     private instServ:InstitutionService,
-    private postserv:PostService
+    private postserv:PostService,
+    private cdr:ChangeDetectorRef,
+    private acc:AccountService
   ){
     postserv.getOwnPosts().subscribe((data:Post[]) =>{
       data.forEach(d=>{
-        if(d.type == "FOUND"){
+        if(d.type == "FOUND" && d.status != "RETURNED"){
           this.p.push(d);
         }
       })
@@ -44,10 +49,11 @@ export class ProfessionsComponent {
   fetchdata(){
     this.profServ.getAllProfs().subscribe((data:UserCommonView[]) =>{
       this.professionals=data
-      console.log(data)
     })
     this.instServ.getAllInstEmpls().subscribe((data:UserCommonView[]) =>{
       this.inst_employees=data
+
+      this.getInstEmplImages()
     })
   }
 
@@ -66,6 +72,26 @@ export class ProfessionsComponent {
     else{
       return null
     }
+  }
+
+  getFullname(){
+    let fullname = this.showEmpl()?.name + " " + this.showEmpl()?.middleName + " " + this.showEmpl()?.surname
+    fullname = fullname.replace("  "," ") //Remove MiddleName
+    return fullname;
+  }
+
+
+  getInstEmplImages(){
+    this.inst_employees!.forEach(acc => {
+      this.acc.getaccountImage(acc.id!).subscribe((data) => {
+      if(data != null){
+        this.acccountImages.set(acc.id!,'data:image/jpeg;base64,' + data[0])
+      }
+      this.cdr.detectChanges();
+      }
+      )
+    });
+    this.acccountImages.set(parseInt(localStorage.getItem('userid')!),localStorage.getItem('accimage'))
   }
 
   showProf(){

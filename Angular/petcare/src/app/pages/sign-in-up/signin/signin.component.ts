@@ -1,6 +1,7 @@
+import { ChangeDescriptionDto } from './../../../reqDto/change-description-dto.model';
 import { LoginToken } from '../../../models/logintoken.model';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
@@ -20,7 +21,9 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class SigninComponent {
 
-    constructor(private auth:AuthService,private route:Router){}
+    constructor(private auth:AuthService,
+      private route:Router,
+    private ref:ChangeDetectorRef){}
 
     form = new FormGroup({
       username: new FormControl('',Validators.required),
@@ -32,8 +35,12 @@ export class SigninComponent {
       if(this.form?.valid){
         this.auth.Authenticate(postUser).subscribe((data : LoginToken) => {
             localStorage.setItem('accessToken', data.token);
-            this.auth.SetUserDetails();
-            this.route.navigate(['/']);
+            setTimeout(() => {
+              this.auth.SetUserDetails().then(() => {
+                this.auth.shareUserDetails()
+                this.route.navigate(['/']);
+              });
+            }, 50)
         }
       )
       }

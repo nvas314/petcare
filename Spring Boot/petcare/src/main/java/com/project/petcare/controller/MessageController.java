@@ -15,42 +15,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class MessageController {
 
     MessageService messageService;
-    MessageRepository messageRepository;
 
-    public MessageController(MessageService messageService, MessageRepository messageRepository) {
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
-        this.messageRepository = messageRepository;
     }
 
-    @GetMapping("/{other_id}")
+    @GetMapping("/user/{other_id}")
     public List<ResMessageDto> getUserMessagesFrom(@PathVariable Long other_id){
         return messageService.messageToDtoList(other_id);
     }
 
-    @PostMapping("/{other_id}")
+    @PostMapping("/user/{other_id}")
     public ResponseEntity<Message> postMessageTo(@RequestBody MessageDto messageDto ,@PathVariable Long other_id) {
         messageService.SaveToDto(messageDto,other_id);
         return ResponseEntity.ok().build();
-    }
-
-
-
-    @PutMapping("/{id}")
-    public Comment updateComment(@PathVariable Long id, @RequestBody Comment updatedcomment){
-        /*if(commentRepository.existsById(id)){
-            updatedcomment.setId(id);
-            return commentRepository.save(updatedcomment);
-        }*/
-        return null;
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id){
-        //commentRepository.deleteById(id);
     }
 
 }

@@ -1,27 +1,33 @@
 package com.project.petcare.controller;
 
-import com.project.petcare.projection.UserCommonView;
 import com.project.petcare.request_dto.LoginResponse;
 import com.project.petcare.request_dto.LoginUserDto;
 import com.project.petcare.request_dto.RegisterUserDto;
 import com.project.petcare.model.User;
 import com.project.petcare.service.AuthenticationService;
 import com.project.petcare.service.JwtService;
+import com.project.petcare.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RequestMapping("/auth")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AuthenticationController {
-    private final JwtService jwtService;
+
 
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
+    private final UserService userService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
+    public AuthenticationController(AuthenticationService authenticationService, JwtService jwtService, UserService userService) {
         this.authenticationService = authenticationService;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/signup")
@@ -43,5 +49,12 @@ public class AuthenticationController {
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+
+    @PostMapping("/signup/image/select/{user_id}")
+    public ResponseEntity<Object> addImageToNewAccount(@RequestPart("image") List<MultipartFile> mpf , @PathVariable Long user_id) throws IOException, InterruptedException {
+        userService.setAccountImageUser(mpf,user_id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -38,24 +38,35 @@
       </mat-card-footer>
   </mat-card>
   <mat-card class="card-items details-card">
-    <mat-card-header>
-        <mat-card-title>Details</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-    <div *ngIf="prof_select.controls.select.value != null">
+    <mat-card-content class="content-details">
+    <div class="flex-position" *ngIf="prof_select.controls.select.value != null">
+
       <div class="details-text">
+      <p><strong style="font-size:20px;"><u>Details</u></strong></p>
       <p><strong>Professional</strong></p>
-    <p><strong>Id:</strong>{{showProf()?.id}}</p>
-    <p><strong>Profession:</strong>{{showProf()?.profession}} {{showProf()?.profId}}</p>
-    <app-map-output [lat]="showProf()?.latitude" [lon]="showProf()?.longitude"></app-map-output>
-    <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'vet', id: showProf()?.profId }" ><button mat-button class="inst-button">Give Pet</button></a>
-    </div>
+      <p><strong>Id:</strong>{{showProf()?.id}}</p>
+      <p><strong>Profession:</strong>{{showProf()?.profession}} {{showProf()?.profId}}</p>
+      <a *ngIf="p.length>0" [routerLink]="'/myposts'" [queryParams]="{ type: 'vet', id: showProf()?.profId }" >
+        <button mat-button class="inst-button">Give Pet</button>
+      </a>
+
     </div>
 
-    <div *ngIf="inst_select.controls.select.value != null">
-      <p><strong>Institution emplyee</strong></p>
-      <p><strong>Id:</strong>{{showEmpl()?.id}}</p>
-      <p><strong>InstId:</strong>{{showEmpl()?.instId}} {{showEmpl()?.institution}}</p>
+    <app-map-output [lat]="showProf()?.latitude" [lon]="showProf()?.longitude"></app-map-output>
+
+    </div>
+
+      <div *ngIf="inst_select.controls.select.value != null" style="display: flex;align-items: flex-start;flex-direction: row;">
+      <div *ngIf="acccountImages.get(showEmpl()?.id!) != null">
+        <img style="width:500px;height:500px;border-radius: 2px;margin-left:20px " [src]="acccountImages.get(showEmpl()?.id!)" alt="image">
+      </div>
+        <div style="flex: none;margin: 30px;">
+          <p><strong style="font-size: 27px;">Institution emplyee</strong></p>
+          <p><strong>Fullname:</strong><a [routerLink]="'/user/'+showEmpl()?.id">{{getFullname()}}</a></p>
+          <div *ngIf="showEmpl()?.description != null"><p><strong>Description:</strong>{{showEmpl()?.description}}</p></div>
+          <div *ngIf="showEmpl()?.telephone != null"><p><strong>Telephone:</strong>{{showEmpl()?.telephone}}</p></div>
+          <div *ngIf="showEmpl()?.email != null"><p><strong>Email:</strong>{{showEmpl()?.email}}</p></div>
+        </div>
       </div>
       </mat-card-content>
     <mat-card-footer>
