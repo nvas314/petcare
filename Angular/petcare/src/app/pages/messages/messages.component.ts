@@ -75,7 +75,6 @@ export class MessagesComponent {
 
   showMessages(user:User){
     this.other_user = user;
-    console.log(this.other_user)
     this.serv.showMessages(user.id?.toString()!).subscribe((data:Message[]) => {
       this.messages = data;
     this.showBoxes();

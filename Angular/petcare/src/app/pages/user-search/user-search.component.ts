@@ -33,7 +33,6 @@ constructor(private serv:UserGeneralService,
     this.searchResults = []
     if(searchinput.trim() == null) return
     this.serv.SearchUsersGeneral(searchinput.toLocaleLowerCase()).subscribe((data) => {
-      console.log(data)
       this.searchResults = data;
     })
     this.cdr.detectChanges()

@@ -110,7 +110,6 @@ export class ApplicationsComponent {
     this.InstselectedDate = new Date(time);
     time = this.ProfselectedDay?.getTime()! + this.ProfselectedTime?.getHours()!*3600*1000 + this.ProfselectedTime?.getMinutes()!*60*1000
     this.ProfselectedDate = new Date(time);
-    console.log(this.ProfselectedDate)
   }
 
   SumbitDateInst(id:number){

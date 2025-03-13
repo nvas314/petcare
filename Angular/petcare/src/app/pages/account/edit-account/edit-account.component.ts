@@ -29,7 +29,6 @@ export class EditAccountComponent {
     private route:Router
   ){
     serv.accountDetails().subscribe((data:User) => {
-      console.log(data  )
       this.user = data
       this.current_username = data.username!
       this.initializeForm();
@@ -63,10 +62,8 @@ export class EditAccountComponent {
   }
 
   SaveChanges(){
-    console.log(!this.edit_form.controls.password.value)
     if(this.edit_form.controls.password.value && this.edit_form.controls.password.value != this.edit_form.controls.confirmpassword.value) return;//Confirm password,if pass not presentddoesnt change
     const cud:ChangeUserDetails = this.edit_form.value as ChangeUserDetails;
-    console.log(cud)
     this.serv.editDetails(cud).subscribe((data:ChangeUserDetails) => {
       if(this.imageFile != undefined){
         const formdata = new FormData()

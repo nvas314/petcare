@@ -98,7 +98,7 @@ export class PostNewComponent {
       }
 
       if(this.post_form.value.status == true) postUser.status = "EMERGENCY"
-      else postUser.status = "MISSING";console.log(postUser)
+      else postUser.status = "MISSING";
 
       const formdata = new FormData()
       for (let i = 0; i < this.a; i++) {
@@ -164,11 +164,10 @@ export class PostNewComponent {
   //  selectedDate: Date | null = null;
 
    onDateChange(){
-    // console.log(this.selectedTime)
     //  let time = date!.getTime()! + this.selectedTime?.getHours()!*3600*1000 + this.selectedTime?.getMinutes()!*60*1000
     //  this.selectedDate = new Date(time);
     //  time = this.selectedDay?.getTime()! + this.selectedTime?.getHours()!*3600*1000 + this.selectedTime?.getMinutes()!*60*1000
     //  this.selectedDate = new Date(time);
-    //  console.log(this.selectedDate)
    }
+
   }

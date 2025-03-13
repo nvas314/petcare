@@ -36,7 +36,6 @@ export class NotificationsComponent {
   fetch(){
     this.serv.getNotifications().subscribe((data:UserNotification[]) =>{
       this.notif = data
-      console.log(data)
     })
 
     this.post_serv.getFoundPosts().subscribe((data:Post[]) => {
@@ -59,7 +58,6 @@ export class NotificationsComponent {
   }
 
   TakePetReq(post_id:number,type:string,id:string,req_id:number){
-    console.log(post_id + type + id)
     this.serv.TakePetfromReq(post_id,type.toLocaleLowerCase(),id).subscribe(() => {
       this.DelPetReq(req_id);
       this.fetch();

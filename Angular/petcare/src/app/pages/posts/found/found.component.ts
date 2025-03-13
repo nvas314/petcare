@@ -71,13 +71,12 @@ export class FoundComponent {
         this.timedout = true
       }
     })
-    console.log(this.timedout)
   }
 
   ngOnInit(){
     this.serv.getFoundPosts().subscribe((data:Post[]) => {
       this.p = data;
-      this.p_filtered = data;console.log(data)
+      this.p_filtered = data;
       this.cdr.detectChanges();
       this.filter()
       this.ShowPage(0)
@@ -183,7 +182,6 @@ export class FoundComponent {
     this.numberofitems = this.p_filtered.length
   }
   handlePageEvent(e: PageEvent){
-    console.log(e)
     this.pagelength = e.pageSize //how many posts
     this.pagenumber = e.pageIndex //which  page i am now
     this.ShowPage(this.pagenumber)

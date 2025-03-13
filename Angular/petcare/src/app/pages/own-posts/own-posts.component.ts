@@ -60,7 +60,6 @@ export class OwnPostsComponent {
       toholder:this.type!.toLocaleUpperCase(),
       toanimalHolderId:parseInt(this.id!)
     }
-    console.log(giveReq);
     this.serv.givePetReq(giveReq).subscribe((data) =>{
       this.router.navigate(['/'])
     })

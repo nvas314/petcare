@@ -61,7 +61,6 @@ export class PostCommentsComponent {
     this.post_id = this.route.snapshot.paramMap.get('id')!;
     this.pserv.getPost(this.post_id).subscribe((data:Post) => {
             this.post = data;
-            console.log(this.post)
     this.postFullname = this.post.name + " " + this.post.middleName + " " + this.post.surname
       this.cdr.detectChanges();
     })

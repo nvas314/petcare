@@ -75,7 +75,7 @@ export class LostComponent {
   ngOnInit(){
     this.serv.getLostPosts().subscribe((data:Post[]) => {
       this.p = data;
-      this.p_filtered = data;console.log(data)
+      this.p_filtered = data;
       this.cdr.detectChanges();
       this.filter()
       this.ShowPage(0)
@@ -181,7 +181,6 @@ export class LostComponent {
     this.numberofitems = this.p_filtered.length
   }
   handlePageEvent(e: PageEvent){
-    console.log(e)
     this.pagelength = e.pageSize //how many posts
     this.pagenumber = e.pageIndex //which  page i am now
     this.ShowPage(this.pagenumber)
