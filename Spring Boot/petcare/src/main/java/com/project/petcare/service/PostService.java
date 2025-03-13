@@ -1,12 +1,9 @@
 package com.project.petcare.service;
 
 import com.project.petcare.config.AppConstants;
-import com.project.petcare.model.Institution;
-import com.project.petcare.model.Profession;
+import com.project.petcare.model.*;
 import com.project.petcare.repository.*;
 import com.project.petcare.request_dto.PostDto;
-import com.project.petcare.model.Post;
-import com.project.petcare.model.User;
 import com.project.petcare.response_dto.ResPostDto;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,13 +28,15 @@ public class PostService {
     UserRepository userRepository;
     PostRepository postRepository;
     InstitutionRepository institutionRepository;
+    InstitutionOfficialsRepository institutionOfficialsRepository;
     ProfRepository profRepository;
     NotificationService notificationService;
 
-    public PostService(UserRepository userRepository, PostRepository postRepository, InstitutionRepository institutionRepository, ProfRepository profRepository, NotificationService notificationService) {
+    public PostService(UserRepository userRepository, PostRepository postRepository, InstitutionRepository institutionRepository, InstitutionOfficialsRepository institutionOfficialsRepository, ProfRepository profRepository, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.institutionRepository = institutionRepository;
+        this.institutionOfficialsRepository = institutionOfficialsRepository;
         this.profRepository = profRepository;
         this.notificationService = notificationService;
     }
@@ -71,7 +70,8 @@ public class PostService {
         }
         else {
             Institution inst = institutionRepository.findByName(postDto.getInstName());
-            if(!fromuser.getInstitutionEmployees().contains(inst) || inst == null)return;//If he is not in the institution
+            InstOfficial instOfficial = institutionOfficialsRepository.findByUser(fromuser);
+            if(!inst.getOfficials().contains(instOfficial) || inst == null)return;//If he is not in the institution
             post.setAnimalHolderId(inst.getId());
         }
 
