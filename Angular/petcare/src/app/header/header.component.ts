@@ -56,7 +56,7 @@ export class HeaderComponent {
   ngOnInit(){
     this.serv.user$.subscribe((data) => {
       this.user = data;
-    });
+    });//From Observer
 
     this.not_serv.notifications$.subscribe((data) => {
       this.updateBadge();

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,13 +37,27 @@ public class NotificationService {
     public List<ResNotificationDto> getNotificationsForUser(){
         for_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Notification> notifications = notificationRepository.findByUser(for_user);
-        return notifications.stream().map(n ->
-                new ResNotificationDto(
+        List<ResNotificationDto> resNotificationDtos = new ArrayList<>();
+        for(Notification n : notifications){
+            if(n.getPost() != null){
+                resNotificationDtos.add(new ResNotificationDto(
+                        n.getId(),
+                        n.getTimestamp(),
+                        n.getTitle(),
+                        n.getMessage(),
+                        n.getPost().getId()
+                ));
+            }
+            else {
+                resNotificationDtos.add(new ResNotificationDto(
                         n.getId(),
                         n.getTimestamp(),
                         n.getTitle(),
                         n.getMessage()
-                )).collect(Collectors.toList());
+                ));
+            }
+        }
+        return resNotificationDtos;
     }
 
     public void MakeNotificationForUser(User user,Post post,String title,String message){

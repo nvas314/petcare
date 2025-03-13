@@ -1,6 +1,6 @@
 import { InstEmpl } from './../../models/inst-empl.model';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfApp } from '../../models/prof-app.model';
 import { ProfessionService } from '../../services/profession.service';
 import { Router, Routes } from '@angular/router';
@@ -29,10 +29,10 @@ export class NewApplicationComponent {
   institutions?:Institution[]
 
   application_form_prof = new FormGroup({
-    profession : new FormControl(),
+    profession : new FormControl("",[Validators.required]),
     description : new FormControl(),
-    longitude : new FormControl(""),
-    latitude : new FormControl("")
+    longitude : new FormControl("",[Validators.required,Validators.min(18),Validators.max(32)]),
+    latitude : new FormControl("",[Validators.required,Validators.min(33),Validators.max(42)]),
   })
 
   application_form_inst = new FormGroup({
@@ -59,10 +59,15 @@ export class NewApplicationComponent {
   }
 
   CreateProfApplication(){
+    if(this.application_form_prof.valid) {
   const profApp = this.application_form_prof.value as ProfApp
   this.prof_serv.makeApplication(profApp).subscribe((data:ProfApp) =>{
     this.route.navigate(["/"])
   })
+  }
+  else{
+    this.application_form_prof.markAllAsTouched()
+  }
   }
 
 

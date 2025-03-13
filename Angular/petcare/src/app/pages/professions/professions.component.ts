@@ -36,6 +36,7 @@ export class ProfessionsComponent {
     private cdr:ChangeDetectorRef,
     private acc:AccountService
   ){
+    if(localStorage.getItem('username')){
     postserv.getOwnPosts().subscribe((data:Post[]) =>{
       data.forEach(d=>{
         if(d.type == "FOUND" && d.status != "RETURNED"){
@@ -43,6 +44,7 @@ export class ProfessionsComponent {
         }
       })
     })
+    }
     this.fetchdata();
   }
 
@@ -80,6 +82,11 @@ export class ProfessionsComponent {
     return fullname;
   }
 
+  getFullnameByUser(user:UserCommonView){
+    let fullname = user.name + " " + user?.middleName + " " + user.surname
+    fullname = fullname.replace("  "," ") //Remove MiddleName
+    return fullname;
+  }
 
   getInstEmplImages(){
     this.inst_employees!.forEach(acc => {

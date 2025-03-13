@@ -1,7 +1,6 @@
 <div class="container-s">
-  <div>
-
-  <a routerLink="/admin/institutions/new" class="new-institution-button"><button mat-stroked-button>New Institution</button></a>
+  <div *ngIf="isroleAdmin">
+    <a routerLink="/admin/institutions/new" class="new-institution-button"><button mat-stroked-button>New Institution</button></a>
   </div>
 <mat-card class="card-items inst-card">
     <mat-card-header>

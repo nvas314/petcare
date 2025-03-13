@@ -29,6 +29,9 @@ export class PostCommentsComponent {
   c!:PostComment[];
   u!:UserCommonView[];
   fullname = new Map()
+  postFullname = ""
+  isAtLeastManager = false
+
 
   post_id !: string;
   timedout :boolean | null = false;
@@ -40,6 +43,7 @@ export class PostCommentsComponent {
     private route:ActivatedRoute,
     private cdr:ChangeDetectorRef,
   ){
+    if(localStorage.getItem('role') == 'MANAGER' || localStorage.getItem('role') == 'APROVER' || localStorage.getItem('role') == 'ADMIN')
     if(localStorage.getItem('userid') == null) this.timedout = true
     userv.ShowUserDetails(localStorage.getItem('userid')!).subscribe((data:UserCommonView) => {
       if(data.status == "TIMEOUT"){
@@ -58,6 +62,7 @@ export class PostCommentsComponent {
     this.pserv.getPost(this.post_id).subscribe((data:Post) => {
             this.post = data;
             console.log(this.post)
+    this.postFullname = this.post.name + " " + this.post.middleName + " " + this.post.surname
       this.cdr.detectChanges();
     })
     this.cserv.getComments(this.post_id).subscribe((data:PostComment[]) => {

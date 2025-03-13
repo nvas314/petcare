@@ -72,7 +72,10 @@ export class EditAccountComponent {
         const formdata = new FormData()
         formdata.append('image',this.imageFile!)
         this.serv.setAccountImage(formdata).subscribe((data) => {
+        this.authserv.SetUserDetails().then(() => {
+          this.authserv.shareUserDetails()
           this.route.navigate(['/account']);
+        });
         })
         if(cud.username != this.current_username){//Username changed , we need to login again
           this.authserv.Disconect();

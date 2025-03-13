@@ -30,19 +30,19 @@ public class User implements UserDetails {
 
 
     @Column(nullable = false,unique = true)
-    @Size(min = 1, max = 30)
+    @Size(min = 4, max = 20)
     @NotBlank
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Size(min = 1, max = 30)
+    @Size(min = 2, max = 20)
     @NotNull
     @NotBlank
     private String name;
 
-    @Size(min = 1, max = 30)
+    @Size(min = 2, max = 20)
     @NotNull
     @NotBlank
     private String surname;
@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
     @NotNull
     @NotBlank
-    //@Email
+    @Email
     private String email;
 
     private String description;

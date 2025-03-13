@@ -7,6 +7,9 @@
         <mat-form-field class="center" appearance="outline">
           <mat-label>Profession</mat-label>
           <input matInput formControlName="profession">
+          <div *ngIf="application_form_prof?.get('profession')?.invalid && application_form_prof?.get('profession')?.touched" class="form-error-text">
+            Please enter your profession
+          </div>
         </mat-form-field>
         <mat-form-field class="center" appearance="outline">
           <mat-label>Description</mat-label>
@@ -15,10 +18,16 @@
         <mat-form-field class="center" appearance="outline">
           <mat-label>Lon</mat-label>
           <input matInput type="number" formControlName="longitude">
+          <div *ngIf="application_form_prof?.get('longitude')?.invalid && application_form_prof?.get('longitude')?.touched" class="form-error-text">
+            Location must be in Greece (Lat:33-42 ,Lon:18-32)
+          </div>
         </mat-form-field>
         <mat-form-field class="center" appearance="outline">
           <mat-label>Lat</mat-label>
           <input matInput type="number" formControlName="latitude">
+          <div *ngIf="application_form_prof?.get('latitude')?.invalid && application_form_prof?.get('latitude')?.touched" class="form-error-text">
+            Location must be in Greece (Lat:33-42 ,Lon:18-32)
+          </div>
         </mat-form-field>
         <app-map-input (postiionChanged)="changeCrendentials($event)" [lon]="lonInput" [lat]="latInput"></app-map-input>
       <div class="center">

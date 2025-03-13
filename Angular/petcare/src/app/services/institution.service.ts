@@ -26,7 +26,7 @@ export class InstitutionService {
   }
 
   getAllInstEmpls(){
-    return this.http.get<UserCommonView[]>(BACKEND_URL+this.PAGE_MAPPING+"/user/officials/all")
+    return this.http.get<UserCommonView[]>(BACKEND_URL+this.PAGE_MAPPING+"/officials/all")
   }
 
   getAllInstApps(){

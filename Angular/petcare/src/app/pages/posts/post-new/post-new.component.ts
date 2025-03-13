@@ -35,12 +35,12 @@ import { MatTimepicker, MatTimepickerInput, MatTimepickerModule } from '@angular
 })
 export class PostNewComponent {
     post_form = new FormGroup({
-      title: new FormControl('',Validators.required),
+      title: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(20)]),
       animalName: new FormControl(''),
-      animal: new FormControl(''),
+      animal: new FormControl('',[Validators.required]),
       breed: new FormControl(''),
-      longitude: new FormControl(''),
-      latitude: new FormControl(''),
+      longitude: new FormControl('',[Validators.required,Validators.min(18),Validators.max(32)]),
+      latitude: new FormControl('',[Validators.required,Validators.min(33),Validators.max(42)]),
       status: new FormControl(false),
       type: new FormControl('LOST'),
       timestamp: new FormControl(''),
@@ -77,11 +77,26 @@ export class PostNewComponent {
     initialValue.setHours(12, 30, 0);
   }
   SumbitPost(){
+    let imagecount =0
+    this.b.forEach(element => {
+      if(element!=null){
+        imagecount += 1
+      }
+    });
+    if(imagecount == 0 ){//noimages
+      alert("Please insert an image to your post")
+      return
+    }
+   if(this.post_form.valid) {
       const postUser = this.post_form.value as Post
-      let date = new Date(this.post_form.value.date!).getTime();
-      let time = new Date(this.post_form.value.time!).getHours() + new Date(this.post_form.value.time!).getMinutes()/60;
-      postUser.timestamp = date + time*3600
-      // postUser.timestamp = new Date(this.post_form.value.timestamp!).getTime();
+      if(true){
+        let date = new Date(this.post_form.value.date!)
+        let timestamp = date.getTime() - (date.getHours() * 3600 + date.getMinutes() *60 + date.getSeconds()) *1000 - date.getMilliseconds()
+        let time = new Date(this.post_form.value.time!).getHours() * 3600 + new Date(this.post_form.value.time!).getMinutes() * 60;
+        timestamp = timestamp + time * 1000
+        postUser.timestamp = timestamp;
+      }
+
       if(this.post_form.value.status == true) postUser.status = "EMERGENCY"
       else postUser.status = "MISSING";console.log(postUser)
 
@@ -98,6 +113,10 @@ export class PostNewComponent {
             this.route.navigate(['/']);
         })
         }
+      }
+      else{
+        this.post_form.markAllAsTouched()
+      }
       }
 
   UploadImage(){const formdata = new FormData()
@@ -140,9 +159,9 @@ export class PostNewComponent {
 
    //Select Datetime
 
-   selectedDay: Date | null = null;
-   selectedTime: Date | null = null;
-   selectedDate: Date | null = null;
+  //  selectedDay: Date | null = null;
+  //  selectedTime: Date | null = null;
+  //  selectedDate: Date | null = null;
 
    onDateChange(){
     // console.log(this.selectedTime)

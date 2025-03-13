@@ -49,11 +49,6 @@ export class AccountComponent {
     })
     this.usrGen.ShowUserDetails(localStorage.getItem('userid')!).subscribe((data:UserCommonView) =>{//for profession,istitution
       this.userdetails = data
-      //console.log(data)
     })
-  }
-
-  deleteAccount(){
-
   }
 }

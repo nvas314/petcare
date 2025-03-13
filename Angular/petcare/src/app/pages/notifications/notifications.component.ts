@@ -36,6 +36,7 @@ export class NotificationsComponent {
   fetch(){
     this.serv.getNotifications().subscribe((data:UserNotification[]) =>{
       this.notif = data
+      console.log(data)
     })
 
     this.post_serv.getFoundPosts().subscribe((data:Post[]) => {

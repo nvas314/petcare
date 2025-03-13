@@ -12,7 +12,7 @@
         <p><strong>Name:</strong> {{userDetails?.name}}</p>
         <p><strong>Middle name:</strong> {{userDetails?.middleName}}</p>
         <p><strong>Surname:</strong> {{userDetails?.surname}}</p>
-        <div *ngIf="userDetails?.email != null"><p><strong>Email:</strong> {{userDetails?.surname}}</p></div>
+        <div *ngIf="userDetails?.email != null"><p><strong>Email:</strong> {{userDetails?.email}}</p></div>
         <div *ngIf="userDetails?.telephone != null"><p><strong>Telephone:</strong> {{userDetails?.telephone}}</p></div>
         <button mat-stroked-button (click)="sendMessage()" class="button">Send a Message</button>
         <div *ngIf="userDetails?.profId != null">

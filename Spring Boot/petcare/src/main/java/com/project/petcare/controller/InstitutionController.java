@@ -51,7 +51,7 @@ public class InstitutionController {
         institutionAndAppService.SetApplicationMeeting(dto);
     }
 
-    @GetMapping("/user/officials/all")
+    @GetMapping("/officials/all")
     public List<ResUserDto> getAllInstOfficials(){
         return institutionAndAppService.OfficialsDtos();
     }

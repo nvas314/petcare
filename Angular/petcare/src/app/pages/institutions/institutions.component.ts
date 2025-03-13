@@ -34,10 +34,12 @@ export class InstitutionsComponent {
     private postserv:PostService,
     private cdr:ChangeDetectorRef
   ){
-    this.getPostFound();
+    if(localStorage.getItem('username')){
+      this.getPostFound();
+    }
     this.fetch();
     if(localStorage.getItem('role') == "ADMIN"){
-      this.isroleAdmin == true
+      this.isroleAdmin = true
     }
   }
 

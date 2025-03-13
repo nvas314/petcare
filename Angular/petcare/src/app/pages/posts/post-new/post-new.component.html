@@ -6,6 +6,9 @@
       <mat-form-field class="center" appearance="outline">
         <mat-label>Title</mat-label>
         <input matInput type="text" formControlName="title">
+        <div *ngIf="post_form?.get('title')?.invalid && post_form?.get('title')?.touched" class="form-error-text">
+          Surname must exist with 4-20 characters
+        </div>
       </mat-form-field>
     </div>
 
@@ -31,6 +34,9 @@
             <mat-option [value]="a">{{a}}</mat-option>
           </div>
         </mat-select>
+        <div *ngIf="post_form?.get('animal')?.invalid && post_form?.get('animal')?.touched" class="form-error-text">
+          Please select Animal
+        </div>
       </mat-form-field>
     </div>
 
@@ -45,6 +51,9 @@
       <mat-form-field class="center" appearance="outline">
         <mat-label>Longitude</mat-label>
         <input matInput type="number" matInput formControlName="longitude">
+        <div *ngIf="post_form?.get('longitude')?.invalid && post_form?.get('longitude')?.touched" class="form-error-text">
+          Location must be in Greece (Lat:33-42 ,Lon:18-32)
+        </div>
       </mat-form-field>
     </div>
 
@@ -52,6 +61,9 @@
       <mat-form-field class="center" appearance="outline">
         <mat-label>Latitude</mat-label>
         <input matInput type="number" matInput formControlName="latitude">
+        <div *ngIf="post_form?.get('latitude')?.invalid && post_form?.get('latitude')?.touched" class="form-error-text">
+          Location must be in Greece (Lat:33-42 ,Lon:18-32)
+        </div>
       </mat-form-field>
     </div>
 
@@ -125,6 +137,9 @@
 <input type="file" (change)="onImageUpload($event,i)" id="image" name="image">
 </div>
 <button (click)="addImage()">Add</button><button (click)="remImage(1)">Remove</button><br>
+<div *ngIf="post_form?.get('image')?.invalid && post_form?.get('image')?.touched" class="form-error-text">
+  Please add at least one image
+</div>
 
 <app-map-input (postiionChanged)="changeCrendentials($event)" [lon]="lonInput" [lat]="latInput"></app-map-input>
 

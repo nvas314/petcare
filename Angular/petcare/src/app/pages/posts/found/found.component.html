@@ -21,14 +21,6 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="sidenav-input-text">
-        <mat-label>Sort By ...</mat-label>
-        <mat-select [(ngModel)]="sortBy" (ngModelChange)="onChange()">
-          <mat-option value="distance">Distance</mat-option>
-          <mat-option value="time">Time</mat-option>
-        </mat-select>
-      </mat-form-field>
-
       <mat-checkbox class="example-margin" [(ngModel)]="Returned" (ngModelChange)="filter()">Returned</mat-checkbox>
       <mat-checkbox class="example-margin" [(ngModel)]="isEmergency" (ngModelChange)="filter()">Emergency</mat-checkbox>
       <mat-checkbox class="example-margin" [(ngModel)]="isAdopted" (ngModelChange)="filter()">For Adoption</mat-checkbox>
@@ -96,7 +88,7 @@
       </div>
 
 
-  <div *ngIf="p.length == 0" style="padding: 10px;">
+  <div *ngIf="p_show.length == 0" style="padding: 10px;">
     <mat-card appearance="outlined" style="width: 100%;margin: 10px;background-color: antiquewhite;">
       <mat-card-content>No Posts yet</mat-card-content>
     </mat-card>

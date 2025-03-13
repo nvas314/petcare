@@ -4,8 +4,8 @@
   <mat-form-field class="center" appearance="outline">
     <mat-label>Username</mat-label>
     <input type="text" matInput formControlName="username">
-  <div *ngIf="form?.get('username')?.invalid && form?.get('name')?.touched" class="text-danger">
-    Username is required.
+  <div *ngIf="form?.get('username')?.invalid && form?.get('username')?.touched" class="form-error-text">
+    Username must exist with 4-20 characters
   </div>
   </mat-form-field>
 </div>
@@ -13,24 +13,36 @@
   <mat-form-field class="center" appearance="outline">
       <mat-label>Email</mat-label>
       <input type="email" matInput formControlName="email">
+      <div *ngIf="form?.get('email')?.invalid && form?.get('email')?.touched" class="form-error-text">
+        Email must exist.
+      </div>
   </mat-form-field>
 </div>
 <div>
   <mat-form-field class="center" appearance="outline">
       <mat-label>Password</mat-label>
       <input type="password" matInput formControlName="password">
+      <div *ngIf="form?.get('password')?.invalid && form?.get('password')?.touched" class="form-error-text">
+        Password must exist with 4-20 characters
+      </div>
   </mat-form-field>
 </div>
 <div>
   <mat-form-field class="center" appearance="outline">
       <mat-label>Confirm Password</mat-label>
       <input type="password" matInput formControlName="confirmpassword">
+      <div *ngIf="!passwordConfirmedCorrectly" class="form-error-text">
+        Password is not confirmed correctly
+      </div>
   </mat-form-field>
 </div>
 <div>
   <mat-form-field class="center" appearance="outline">
       <mat-label>First Name</mat-label>
       <input type="text" matInput formControlName="name">
+      <div *ngIf="form?.get('name')?.invalid && form?.get('name')?.touched" class="form-error-text">
+        First Name must exist with 2-20 characters
+      </div>
   </mat-form-field>
 </div>
 <div>
@@ -43,6 +55,9 @@
   <mat-form-field class="center" appearance="outline">
       <mat-label>Last Name</mat-label>
       <input type="text" matInput formControlName="surname">
+      <div *ngIf="form?.get('surname')?.invalid && form?.get('surname')?.touched" class="form-error-text">
+        Surname must exist with 2-20 characters
+      </div>
   </mat-form-field>
 </div>
 <div>
@@ -53,6 +68,7 @@
 </div>
 <label for="image">Upload</label><br>
 <input type="file" (change)="onImageUpload($event)" id="image" name="image">
+*Required
 <div class="center">
   <button mat-stroked-button>Create Account</button>
 </div>

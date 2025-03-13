@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MessageService } from '../../../services/message.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-signin',
@@ -23,6 +25,8 @@ export class SigninComponent {
 
     constructor(private auth:AuthService,
       private route:Router,
+      private msgserv:MessageService,
+      private notifserv:NotificationService,
     private ref:ChangeDetectorRef){}
 
     form = new FormGroup({
@@ -38,6 +42,9 @@ export class SigninComponent {
             setTimeout(() => {
               this.auth.SetUserDetails().then(() => {
                 this.auth.shareUserDetails()
+                this.msgserv.loadUnreadMessages()
+                this.notifserv.loadNotifications()
+                this.notifserv.loadGiveReqs()
                 this.route.navigate(['/']);
               });
             }, 50)

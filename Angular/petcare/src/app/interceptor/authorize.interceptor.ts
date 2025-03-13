@@ -1,16 +1,10 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-} from '@angular/common/http';
+import {HttpEvent,HttpInterceptor,HttpHandler,HttpRequest} from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-//import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthorizeInterceptor implements HttpInterceptor {
@@ -41,13 +35,10 @@ export class AuthorizeInterceptor implements HttpInterceptor {
           console.log("Session Expired , please login again.")
           this.authService.Disconect()
           this.router.navigate(['/login'])
-          //location.reload()
         }
 
         if (error.status === 403){
-          //this.authService.Disconect()
           this.router.navigate(['/denied'])
-          //location.reload()
         }
 
         if (error.status === 404){

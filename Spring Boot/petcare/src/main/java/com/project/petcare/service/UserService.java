@@ -166,7 +166,7 @@ public class UserService {
         user.setDescription(dto.getDescription());
         user.setTelephone(dto.getTelephone());
         user.setEmail(dto.getEmail());
-        if(dto.getPassword() != null){
+        if(dto.getPassword() != null && !dto.getPassword().isBlank()){
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         userRepository.save(user);

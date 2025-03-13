@@ -86,6 +86,7 @@ export class MessagesComponent {
     this.serv.showMessageBoxes().subscribe((data:MessageBox[]) => {
       this.msgBoxes = data;
       this.getImages();
+      this.serv.loadUnreadMessages();//Badge
       this.cdr.detectChanges()
     })
   }

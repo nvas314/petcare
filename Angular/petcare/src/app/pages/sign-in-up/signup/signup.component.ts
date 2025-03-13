@@ -20,25 +20,31 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
 
+    passwordConfirmedCorrectly = true;
+
     constructor(private auth:AuthService,
       private acc:AccountService,
       private route:Router
     ){}
 
     form = new FormGroup({
-      username: new FormControl(''),//,[Validators.required,Validators.minLength(1),Validators.maxLength(20)]),
-      email: new FormControl(''),//,[Validators.required]),
-      password: new FormControl(''),//,[Validators.required,Validators.minLength(1),Validators.pattern('')]),
+      username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(20)]),
+      email: new FormControl('',[Validators.required,Validators.email]),
+      password: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(20)]),
       confirmpassword: new FormControl(''),//,[Validators.required,Validators.minLength(1),Validators.pattern('')]),
-      name: new FormControl(''),//,[Validators.required]),
+      name: new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(20)]),
       middleName: new FormControl(''),
-      surname: new FormControl(''),//,[Validators.required])
-      telephone: new FormControl('')//,[Validators.required])
+      surname: new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(20)]),
+      telephone: new FormControl('')
     })
 
     onSumbit(){
+  if(this.form.controls.password.value != this.form.controls.confirmpassword.value) {
+    this.passwordConfirmedCorrectly = false //Password not confirmed , show error
+    return
+  }
+   if(this.form.valid) {
       const postUser = this.form.value as User
-      if(this.form.controls.password.value != this.form.controls.confirmpassword.value) return //Confirm password
       if(this.form?.valid){
         this.auth.NewUser(postUser).subscribe((data) => {
         if(this.imageFile != undefined){
@@ -53,6 +59,10 @@ export class SignupComponent {
         }
         })
       }
+    }
+    else{
+      this.form.markAllAsTouched()
+    }
     }
 
     imageFile?:File = undefined;

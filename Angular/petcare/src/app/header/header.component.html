@@ -29,10 +29,10 @@
     </div>
     </div>
       <span *ngIf="user.username != null" class="header-right">
-        <a routerLink="notifications" (click)="changeActive('notifications')" [class.active] = "href == 'notifications'">
+        <a routerLink="notifications" (click)="changeActive('notifications')" [class.active] = "href == 'notifications'" style="height: 100px;">
           <div [matBadge]="notifications" matBadgeOverlap="true" class="condition-badge"><mat-icon>notifications</mat-icon></div>
         </a>
-        <a routerLink="messages" class="icons-right" (click)="changeActive('messages')" [class.active] = "href == 'messages'">
+        <a routerLink="messages" class="icons-right" (click)="changeActive('messages')" [class.active] = "href == 'messages'" style="height: 100px;">
           <div [matBadge]="newmessages" matBadgeOverlap="true" class="condition-badge"><mat-icon>chat Bubble</mat-icon></div>
         </a>
         <div *ngIf="user.username!=''" class="img-name">

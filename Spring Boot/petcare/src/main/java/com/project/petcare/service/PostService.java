@@ -53,6 +53,7 @@ public class PostService {
         post.setAnimal(postDto.getAnimal());
         post.setBreed(postDto.getBreed());
         post.setType(postDto.getType());
+        post.setTimestamp(postDto.getTimestamp());
         post.setStatus(postDto.getStatus());
         post.setCollarText(postDto.getCollarText());
         post.setDescription(postDto.getDescription());

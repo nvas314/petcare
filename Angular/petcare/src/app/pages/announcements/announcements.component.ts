@@ -21,7 +21,7 @@ export class AnnouncementsComponent {
   hasManagerPrivs = false //Only managers and up can delete announcements
 
   constructor(private serv:AnnouncementService){
-    if((localStorage.getItem('role') == "MANGAGER") || (localStorage.getItem('role') == "APPROVER") || (localStorage.getItem('role') == "ADMIN")){
+    if((localStorage.getItem('role') == "MANAGER") || (localStorage.getItem('role') == "APPROVER") || (localStorage.getItem('role') == "ADMIN")){
       this.hasManagerPrivs = true
     }
     this.fetch()

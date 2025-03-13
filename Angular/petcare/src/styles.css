@@ -35,3 +35,8 @@ body{
   margin: 10px;
 }
 
+.form-error-text{
+  color: rgb(156, 0, 0);
+  font-size: small;
+  padding-left: 3px;
+}
