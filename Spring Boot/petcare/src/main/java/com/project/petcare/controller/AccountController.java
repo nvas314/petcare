@@ -45,7 +45,6 @@ public class AccountController {
 
     @GetMapping("/user/image/{user_id}")
     public ResponseEntity<List<String>> getPostImage(@PathVariable Long user_id) throws IOException {
-        System.out.println("Looking for image: ");
         List<String> image = userService.getAccountImage(user_id);
         return ResponseEntity.ok(image);
     }

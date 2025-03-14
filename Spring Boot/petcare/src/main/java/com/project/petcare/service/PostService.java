@@ -218,7 +218,6 @@ public class PostService {
 
     public void setPostStatus(Long post_id , String post_status){
         AppConstants.Post.PostStatus status;
-        System.out.println(post_status);
         User fromuser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         switch (post_status) {
             case "emergency" -> status = AppConstants.Post.PostStatus.EMERGENCY;
