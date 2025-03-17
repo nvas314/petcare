@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -8,7 +9,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-users',
-  imports: [NgFor,NgIf,
+  imports: [NgFor,NgIf,RouterModule,
     MatTable,MatButton,MatHeaderCellDef,MatHeaderRowDef,MatRowDef,MatTableModule,MatMenu,MatMenuTrigger,MatMenuItem
   ],
   templateUrl: './users.component.html',
