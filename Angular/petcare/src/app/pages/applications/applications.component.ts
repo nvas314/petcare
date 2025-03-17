@@ -27,11 +27,14 @@ import { HeaderComponent } from '../../header/header.component';
 import { PostBoxSecondaryComponent } from '../posts/post-box-secondary/post-box-secondary.component';
 import { PostBoxComponent } from '../posts/post-box/post-box.component';
 import { MatSelect } from '@angular/material/select';
+import { UserGeneralService } from '../../services/user-general.service';
+import { UserCommonView } from '../../models/user-details.model';
+import { Institution } from '../../models/institution.model';
 
 @Component({
   selector: 'app-applications',
   providers: [provideNativeDateAdapter()],
-  imports: [NgIf, FormsModule, ReactiveFormsModule,DatePipe,
+  imports: [NgIf, FormsModule, ReactiveFormsModule,DatePipe,RouterModule,
     MatTableModule, MatButton, MatLabel, MatFormField, MatDatepicker, MatTimepicker, RouterModule, FormsModule
     ,
     MatExpansionModule, MatButton, MatButtonModule, MatFormField, MatLabel, ReactiveFormsModule, MatAutocompleteModule, MatInputModule, FormsModule, MatFormFieldModule, ReactiveFormsModule,
@@ -45,10 +48,13 @@ export class ApplicationsComponent {
 
   instApps : InstEmpl[] = []
   profApps : ProfApp[] = []
-
+  instEmplNames = new Map();
+  ProfNames = new Map();
+  InstNames = new Map();
 
   constructor(private profServ:ProfessionService,
     private instServ:InstitutionService,
+    private userServ:UserGeneralService,
     private actRoute:ActivatedRoute,
     private router:Router,
     private cdr: ChangeDetectorRef
@@ -61,11 +67,13 @@ export class ApplicationsComponent {
       this.profApps = []
       this.profApps = [...this.profApps , ...data]
       this.cdr.markForCheck()
+      this.findNamesProf()
     })
     this.instServ.getAllInstApps().subscribe((data : InstEmpl[]) => {
       this.instApps = []
       this.instApps = [...this.instApps , ...data]
       this.cdr.markForCheck()//Refresh
+      this.findNamesInst()
     })
   }
 
@@ -92,6 +100,34 @@ export class ApplicationsComponent {
     this.profServ.delProfApp(id).subscribe((data) => {this.fetchData()})
   }
 
+  findNamesProf(){
+    this.ProfNames = new Map();
+    this.profApps.forEach(p => {
+      this.userServ.ShowUserDetails(p.userId?.toString()!).subscribe((data:UserCommonView) => {
+          this.ProfNames.set(data.id,(data.name + " " + data.middleName + " " + data.surname).replace("  "," "))
+      })
+      this.cdr.markForCheck()
+      this.cdr.detectChanges()
+    });
+  }
+
+  findNamesInst(){
+    this.InstNames = new Map()
+    this.instEmplNames = new Map()
+    this.instServ.getAllInsts().subscribe((data:Institution[]) => {
+      data.forEach(inst => {
+        this.InstNames.set(inst.id,inst.name)
+      });
+      this.cdr.markForCheck()
+    })
+    this.instApps.forEach(i => {
+      this.userServ.ShowUserDetails(i.userId?.toString()!).subscribe((data:UserCommonView) => {
+          this.instEmplNames.set(data.id,(data.name + " " + data.middleName + " " + data.surname).replace("  "," "))
+          console.log(this.instEmplNames.get(data.id) + data.id)
+          this.cdr.markForCheck()
+      })
+    });
+  }
 
   //Select Date
 
