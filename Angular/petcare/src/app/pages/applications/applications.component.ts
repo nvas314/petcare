@@ -66,14 +66,14 @@ export class ApplicationsComponent {
     this.profServ.getAllProfApps().subscribe((data : ProfApp[]) => {
       this.profApps = []
       this.profApps = [...this.profApps , ...data]
-      this.cdr.markForCheck()
       this.findNamesProf()
+      this.cdr.markForCheck()
     })
     this.instServ.getAllInstApps().subscribe((data : InstEmpl[]) => {
       this.instApps = []
       this.instApps = [...this.instApps , ...data]
-      this.cdr.markForCheck()//Refresh
       this.findNamesInst()
+      this.cdr.markForCheck()//Refresh
     })
   }
 
@@ -101,7 +101,7 @@ export class ApplicationsComponent {
   }
 
   findNamesProf(){
-    this.ProfNames = new Map();
+    this.ProfNames.clear()
     this.profApps.forEach(p => {
       this.userServ.ShowUserDetails(p.userId?.toString()!).subscribe((data:UserCommonView) => {
           this.ProfNames.set(data.id,(data.name + " " + data.middleName + " " + data.surname).replace("  "," "))
@@ -112,18 +112,20 @@ export class ApplicationsComponent {
   }
 
   findNamesInst(){
-    this.InstNames = new Map()
-    this.instEmplNames = new Map()
+    this.InstNames.clear()
+    this.instEmplNames.clear()
     this.instServ.getAllInsts().subscribe((data:Institution[]) => {
       data.forEach(inst => {
         this.InstNames.set(inst.id,inst.name)
       });
+      this.cdr.detectChanges()
       this.cdr.markForCheck()
     })
     this.instApps.forEach(i => {
       this.userServ.ShowUserDetails(i.userId?.toString()!).subscribe((data:UserCommonView) => {
           this.instEmplNames.set(data.id,(data.name + " " + data.middleName + " " + data.surname).replace("  "," "))
           console.log(this.instEmplNames.get(data.id) + data.id)
+          this.cdr.detectChanges()
           this.cdr.markForCheck()
       })
     });
